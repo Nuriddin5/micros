@@ -1,4 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
+using MicrosTest_01_10.Context;
+
 namespace MicrosTest_01_10
 {
     public class Program
@@ -10,6 +13,8 @@ namespace MicrosTest_01_10
             // Add services to the container.
 
             builder.Services.AddControllersWithViews();
+            builder.Services.AddEntityFrameworkNpgsql().AddDbContext<ApiDbContext>(opt =>
+        opt.UseNpgsql(builder.Configuration.GetConnectionString("Connection")));
 
             var app = builder.Build();
 
