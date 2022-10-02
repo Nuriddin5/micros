@@ -16,6 +16,7 @@ public class AuthService : IAuthService
     }
 
     public void Register(RegisterDto registerDto)
+    
     {
         var fullName = registerDto.FullName;
         if (string.IsNullOrEmpty(fullName) || fullName.Length < 2)

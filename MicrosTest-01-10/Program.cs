@@ -14,6 +14,15 @@ namespace MicrosTest_01_10
             // Add services to the container.
 
             builder.Services.AddControllersWithViews();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("Policy1", policy =>
+                {
+                    policy.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
             
             builder.Services.AddEntityFrameworkNpgsql().AddDbContext<ApiDbContext>(opt =>
         opt.UseNpgsql(builder.Configuration.GetConnectionString("Connection")));
@@ -32,6 +41,7 @@ namespace MicrosTest_01_10
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseCors("Policy1");
 
 
             app.MapControllerRoute(
