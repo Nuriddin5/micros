@@ -82,6 +82,12 @@ namespace MicrosTest_01_10.Migrations
                     b.Property<string>("FullName")
                         .HasColumnType("text");
 
+                    b.Property<string>("Password")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");

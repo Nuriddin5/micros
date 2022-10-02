@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using MicrosTest_01_10.Context;
+using MicrosTest_01_10.Services;
 
 namespace MicrosTest_01_10
 {
@@ -13,9 +14,12 @@ namespace MicrosTest_01_10
             // Add services to the container.
 
             builder.Services.AddControllersWithViews();
+            
             builder.Services.AddEntityFrameworkNpgsql().AddDbContext<ApiDbContext>(opt =>
         opt.UseNpgsql(builder.Configuration.GetConnectionString("Connection")));
 
+            builder.Services.AddScoped<IAuthService, AuthService>();
+            
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

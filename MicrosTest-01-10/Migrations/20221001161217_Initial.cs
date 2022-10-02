@@ -31,6 +31,8 @@ namespace MicrosTest_01_10.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     FullName = table.Column<string>(type: "text", nullable: true),
+                    UserName = table.Column<string>(type: "text", nullable: true),
+                    Password = table.Column<string>(type: "text", nullable: true),
                     Balance = table.Column<double>(type: "double precision", nullable: true)
                 },
                 constraints: table =>

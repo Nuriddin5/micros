@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MicrosTest_01_10.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20221001143547_Initial")]
+    [Migration("20221001161217_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -82,6 +82,12 @@ namespace MicrosTest_01_10.Migrations
                         .HasColumnType("double precision");
 
                     b.Property<string>("FullName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserName")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
