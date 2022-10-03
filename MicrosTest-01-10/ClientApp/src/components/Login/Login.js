@@ -2,6 +2,7 @@
 import 'react-toastify/dist/ReactToastify.css';
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './login.css'
 
 const {REACT_APP_API_ENDPOINT} = process.env;
 
@@ -47,14 +48,14 @@ export default function Login() {
 
     const showToastMessage = (message, status) => {
         if (status === 200) {
-           const data = JSON.stringify({
+            const data = JSON.stringify({
                 username: userInfo.username,
                 password: userInfo.password,
             })
             localStorage.setItem("user", data);
             window.location.href = '/';
         } else if (status === 400) {
-            toast.error(`Error : ${message}`, {
+            toast.error(`${message}`, {
                 position: toast.POSITION.TOP_CENTER
             });
             setTimeout(function () {
@@ -65,29 +66,31 @@ export default function Login() {
     };
 
 
-    return <div>
-        <form onSubmit={handleSubmit}>
-            <ToastContainer/>
-            <div className="mb-3 mx-5 ">
-                <label htmlFor="formGroupExampleInput2" className="form-label">Username</label>
-                <input name={"username"} type="text" className="form-control" id="formGroupExampleInput2"
-                       placeholder="Enter username" defaultValue={userInfo.username}
-                       onChange={handleChange} required/>
-            </div>
-            <div className="mb-3 mx-5">
-                <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
-                <input name={"password"} type="password" className="form-control" id="exampleInputPassword1"
-                       defaultValue={userInfo.password}
-                       onChange={handleChange} required/>
-            </div>
-            <div className={"d-flex justify-content-center"}>
+    return <div className="form-v7">
+        <div className="page-content">
+            <div className="form-v7-content2">
+                <form onSubmit={handleSubmit} className="form-detail" action="#" method="post" id="myform">
+                    <ToastContainer/>
 
-                <button type="submit" className="btn btn-primary ">Login</button>
-            </div>
-            <div className={"d-flex justify-content-center"}>
-                <a href="/register">Register if you haven't account</a>
-            </div>
+                    <div className="form-row">
+                        <label htmlFor="username">USERNAME</label>
+                        <input type="text" name="username" id="username" className="input-text"
+                               defaultValue={userInfo.username}
+                               onChange={handleChange} required/>
+                    </div>
 
-        </form>
+                    <div className="form-row">
+                        <label htmlFor="password">PASSWORD</label>
+                        <input type="password" name="password" id="password" className="input-text"
+                               defaultValue={userInfo.password}
+                               onChange={handleChange} required/>
+                    </div>
+                    <div className="form-row-last">
+                        <input type="submit" name="register" className="register" value="Login"/>
+                        <p>Or<a href="/register">Sign up</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 }

@@ -3,8 +3,8 @@ import {Route, Routes, Navigate} from 'react-router-dom';
 import {Layout} from './components/Layout';
 import './custom.css';
 import {Home} from "./components/Home";
-import Login from "./components/Login";
-import Register from "./components/Register";
+import Login from "./components/Login/Login";
+import Register from "./components/Register/Register";
 
 export default class App extends Component {
     static displayName = App.name;
@@ -12,20 +12,19 @@ export default class App extends Component {
     render() {
         return (
 
-          
-                <Routes>
 
-                    <Route path={"/"} element={
-                        localStorage.getItem('user') ?
-                            <Layout children={<Home/>}/> : <Login/>}/>
-                    
-                    {/*<Route path={"/"} element={<Layout children={<Home/>}/>}/>*/}
-                    <Route path={"/login"} element={<Login/>}/>
-                    <Route path={"/register"} element={<Register/>}/>
+            <Routes>
+
+                <Route path={"/"} element={
+                    localStorage.getItem('user') ?
+                        <Layout children={<Home/>}/> : <Login/>}/>
+
+                {/*<Route path={"/"} element={<Layout children={<Home/>}/>}/>*/}
+                <Route path={"/login"} element={<Login/>}/>
+                <Route path={"/register"} element={<Register/>}/>
 
 
-                </Routes>
-           
+            </Routes>
 
 
         )

@@ -22,7 +22,7 @@ export default function Register() {
 
     const showToastMessage = (message, status) => {
         if (status === 200) {
-            toast.success(`Success : ${message}`, {
+            toast.success(`${message}`, {
                 position: toast.POSITION.TOP_RIGHT
             });
 
@@ -31,7 +31,7 @@ export default function Register() {
             }, 5000)
 
         } else if (status === 400) {
-            toast.error(`Error : ${message}`, {
+            toast.error(`${message}`, {
                 position: toast.POSITION.TOP_CENTER
             });
             setTimeout(function () {
