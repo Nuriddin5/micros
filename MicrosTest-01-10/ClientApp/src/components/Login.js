@@ -47,14 +47,12 @@ export default function Login() {
 
     const showToastMessage = (message, status) => {
         if (status === 200) {
-            // toast.success(`Success : ${message}`, {
-            //     position: toast.POSITION.TOP_RIGHT
-            // });
-
-         
+           const data = JSON.stringify({
+                username: userInfo.username,
+                password: userInfo.password,
+            })
+            localStorage.setItem("user", data);
             window.location.href = '/';
-
-
         } else if (status === 400) {
             toast.error(`Error : ${message}`, {
                 position: toast.POSITION.TOP_CENTER

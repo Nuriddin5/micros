@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Route, Routes} from 'react-router-dom';
+import {Route, Routes, Navigate} from 'react-router-dom';
 import {Layout} from './components/Layout';
 import './custom.css';
 import {Home} from "./components/Home";
@@ -12,16 +12,20 @@ export default class App extends Component {
     render() {
         return (
 
-            <Layout>
+          
                 <Routes>
 
-                    <Route path={"/"} element={<Home/>}/>
+                    <Route path={"/"} element={
+                        localStorage.getItem('user') ?
+                            <Layout children={<Home/>}/> : <Login/>}/>
+                    
+                    {/*<Route path={"/"} element={<Layout children={<Home/>}/>}/>*/}
                     <Route path={"/login"} element={<Login/>}/>
                     <Route path={"/register"} element={<Register/>}/>
 
 
                 </Routes>
-            </Layout>
+           
 
 
         )
