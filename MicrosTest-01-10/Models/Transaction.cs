@@ -11,4 +11,6 @@ public class Transaction
     public Category? Category { get; set; }
 
     public string? Comment { get; set; }
+
+    public User? User { get; set; }
 }

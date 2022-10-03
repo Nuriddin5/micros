@@ -36,7 +36,12 @@ namespace MicrosTest_01_10.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Categories");
                 });
@@ -61,9 +66,14 @@ namespace MicrosTest_01_10.Migrations
                     b.Property<bool>("IsIncome")
                         .HasColumnType("boolean");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Transactions");
                 });
@@ -93,13 +103,28 @@ namespace MicrosTest_01_10.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("MicrosTest_01_10.Models.Category", b =>
+                {
+                    b.HasOne("MicrosTest_01_10.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("MicrosTest_01_10.Models.Transaction", b =>
                 {
                     b.HasOne("MicrosTest_01_10.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId");
 
+                    b.HasOne("MicrosTest_01_10.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
                     b.Navigation("Category");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }
