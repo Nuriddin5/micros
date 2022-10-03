@@ -21,17 +21,23 @@ export default function Register() {
 
     const showToastMessage = (message, status) => {
         if (status === 200) {
-            toast.success(`Success : ${message} Go to login`, {
+            toast.success(`Success : ${message}`, {
                 position: toast.POSITION.TOP_RIGHT
             });
+
+            setTimeout(function () {
+                window.location.href = '/login';
+            }, 5000)
+
         } else if (status === 400) {
             toast.error(`Error : ${message}`, {
                 position: toast.POSITION.TOP_CENTER
             });
+            setTimeout(function () {
+                window.location.href = window.location.href.split("?")[0]
+            }, 5000)
         }
-        setTimeout(function () {
-            window.location.href = window.location.href.split("?")[0]
-        }, 5000)
+
     };
 
 
