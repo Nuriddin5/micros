@@ -98,7 +98,11 @@ export default function Register() {
             </div>
             <div className={"d-flex justify-content-center"}>
 
-                <button className="btn btn-primary ">Submit</button>
+                <button className="btn btn-primary ">Register</button>
+            </div>
+            <div className={"d-flex justify-content-center"}>
+
+                <a href={"/login"}>Login, if you have account</a>
             </div>
         </form>
     </div>

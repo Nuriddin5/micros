@@ -34,9 +34,18 @@ namespace MicrosTest_01_10.Controllers
 
         [Route("login")]
         [HttpPost]
-        public ActionResult Login()
+        public ActionResult Login(LoginDto loginDto)
         {
-            return Ok();
+            try
+            {
+                _authService.Login(loginDto);
+            }
+            catch (System.Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+            return Ok("User registered successfully");
         }
     }
 }

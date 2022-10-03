@@ -1,5 +1,6 @@
-
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
+using MicrosTest_01_10.Authentication;
 using MicrosTest_01_10.Context;
 using MicrosTest_01_10.Services;
 
@@ -12,7 +13,9 @@ namespace MicrosTest_01_10
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            builder.Services
+                .AddAuthentication("BasicAuthHandler")
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthHandler>("BasicAuthHandler", _ => { });
             builder.Services.AddControllersWithViews();
             builder.Services.AddCors(options =>
             {
@@ -23,12 +26,12 @@ namespace MicrosTest_01_10
                         .AllowAnyHeader();
                 });
             });
-            
+
             builder.Services.AddEntityFrameworkNpgsql().AddDbContext<ApiDbContext>(opt =>
-        opt.UseNpgsql(builder.Configuration.GetConnectionString("Connection")));
+                opt.UseNpgsql(builder.Configuration.GetConnectionString("Connection")));
 
             builder.Services.AddScoped<IAuthService, AuthService>();
-            
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -42,6 +45,9 @@ namespace MicrosTest_01_10
             app.UseStaticFiles();
             app.UseRouting();
             app.UseCors("Policy1");
+            
+            app.UseAuthentication();
+            app.UseAuthorization();
 
 
             app.MapControllerRoute(
