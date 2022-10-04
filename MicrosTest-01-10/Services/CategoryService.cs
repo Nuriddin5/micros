@@ -1,4 +1,5 @@
-﻿using MicrosTest_01_10.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using MicrosTest_01_10.Context;
 using MicrosTest_01_10.Dtos;
 using MicrosTest_01_10.Exception;
 using MicrosTest_01_10.Models;
@@ -20,11 +21,7 @@ public class CategoryService : ICategoryService
         List<Category> categories;
         try
         {
-            var user = _context.Users.FirstOrDefault(user => username!.Equals(user.UserName));
-            if (user == null)
-            {
-                throw new CustomException("Uncaught error");
-            }
+            var user = UserChecking(username);
 
             categories = _context.Categories.Where(category => category.User!.Id == user.Id)
                 .ToList();
@@ -37,13 +34,10 @@ public class CategoryService : ICategoryService
         return categories;
     }
 
+
     public Category AddCategory(CategoryDto categoryDto, string username)
     {
-        var user = _context.Users.FirstOrDefault(user => username!.Equals(user.UserName));
-        if (user == null)
-        {
-            throw new CustomException("Uncaught error");
-        }
+        var user = UserChecking(username);
 
         Category category = new()
         {
@@ -59,28 +53,47 @@ public class CategoryService : ICategoryService
 
     public void DeleteCategory(int categoryId, string username)
     {
-        var user = _context.Users.FirstOrDefault(user => username!.Equals(user.UserName));
-        if (user == null)
-        {
-            throw new CustomException("Uncaught error");
-        }
+        var user = UserChecking(username);
 
-        var category = _context.Categories.Find(categoryId);
-        if (category == null || category.User!.Id != user.Id)
-        {
-            throw new CustomException("Problem with account");
-        }
+        CategoryValidChecking(categoryId, user, out var category);
 
         _context.Categories.Remove(category);
         _context.SaveChanges();
     }
 
-    public void EditCategory(CategoryDto categoryDto, string username)
+
+    public void EditCategory(int categoryId, CategoryDto categoryDto, string username)
+    {
+        var user = UserChecking(username);
+
+        CategoryValidChecking(categoryId, user, out var category);
+
+        category!.Name = categoryDto.Name;
+        category.IsIncome = categoryDto.IsIncome;
+
+        _context.Entry(category).State = EntityState.Modified;
+
+        _context.SaveChanges();
+    }
+
+
+    private void CategoryValidChecking(int categoryId, User? user, out Category? category)
+    {
+        category = _context.Categories.Find(categoryId);
+        if (category == null || category.User!.Id != user.Id)
+        {
+            throw new CustomException("Problem with account");
+        }
+    }
+
+    private User? UserChecking(string username)
     {
         var user = _context.Users.FirstOrDefault(user => username!.Equals(user.UserName));
         if (user == null)
         {
             throw new CustomException("Uncaught error");
         }
+
+        return user;
     }
 }

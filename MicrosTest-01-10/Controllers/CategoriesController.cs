@@ -44,27 +44,16 @@ namespace MicrosTest_01_10.Controllers
 
         // PUT: api/Categories/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(int id, Category category)
+        public async Task<IActionResult> PutCategory(int id, CategoryDto categoryDto)
         {
-            if (id != category.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(category).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                var username = HttpContext.User.Identity?.Name;
+                _service.EditCategory(id, categoryDto, username);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (System.Exception e)
             {
-                if (!CategoryExists(id))
-                {
-                    return NotFound();
-                }
-
-                throw;
+                return BadRequest(e.Message);
             }
 
             return NoContent();
