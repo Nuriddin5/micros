@@ -1,63 +1,69 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
+
+const {REACT_APP_API_ENDPOINT} = process.env;
 
 
 export default function Categories() {
 
-    const [user, setUser] = useState({})
     const [categories, setCategories] = useState([])
 
-    function getUser() {
-        if (!localStorage.getItem("user")) {
-            window.location.replace("/login")
-        }
-        const user = JSON.parse(localStorage.getItem("user"));
-        setUser(user)
-        return user
-    }
-    
-    
-    
-    
+    const user = JSON.parse(localStorage.getItem("user"));
+
+
+    useEffect(() => {
+        const url = `${REACT_APP_API_ENDPOINT}/Categories/User`;
+        const token = btoa(`${user.username}:${user.password}`);
+        console.log(token);
+        
+        
+
+        const fetchData = () => {
+            const headers = {'Authorization': `basic ${token}`}
+            fetch(url, {headers})
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    setCategories(data);
+                });
+        };
+
+        fetchData();
+    }, []);
 
 
     return (
 
-        <>
-            <div>
-                <button onClick={getUser}>Button</button>
-                {user.username}
+        <div className={"container"}>
+            <div className={"d-flex justify-content-center mt-5"}>
+                <h2>List of catgories user with username {user.username} </h2>
             </div>
 
-            <table className="table table-hover">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td colSpan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                </tr>
-                </tbody>
-            </table>
-        </>
+            <div className={"d-flex justify-content-center mt-5 "}>
+                <table className="table table-striped w-75">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Category name</th>
+                        <th scope="col">IsIncome</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {categories.map((value, index) => <tr key={index}>
+                        <th scope="row">{index + 1}</th>
+                        <td>{value.name}</td>
+                        <td>{value.isIncome.toString()}</td>
+                        <td className={"w-25"}>
+                            <button className={"btn btn-primary mx-3"}>Edit</button>
+                            <button className={"btn btn-danger"}>Delete</button>
+                        </td>
+                    </tr>)}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
     );
 }
 

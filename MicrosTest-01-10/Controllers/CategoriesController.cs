@@ -93,10 +93,5 @@ namespace MicrosTest_01_10.Controllers
 
             return NoContent();
         }
-
-        private bool CategoryExists(int id)
-        {
-            return _context.Categories.Any(e => e.Id == id);
-        }
     }
 }

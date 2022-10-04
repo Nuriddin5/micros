@@ -6,6 +6,7 @@ import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 import Home from "./components/Home";
 import Logout from "./components/Logout";
+import Categories from "./components/Category/Categories";
 
 export default class App extends Component {
     static displayName = App.name;
@@ -22,6 +23,7 @@ export default class App extends Component {
                 <Route path={"/logout"} element={<Logout/>}/>
                 <Route path={"/login"} element={<Login/>}/>
                 <Route path={"/register"} element={<Register/>}/>
+                <Route path={"/categories"} element={<Layout children={ <Categories/>}/>}/>
                 
             </Routes>
 
