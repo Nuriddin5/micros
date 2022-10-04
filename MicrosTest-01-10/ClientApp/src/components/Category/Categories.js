@@ -16,17 +16,21 @@ export default function Categories() {
         console.log(token);
         
         
-
         const fetchData = () => {
             const headers = {'Authorization': `basic ${token}`}
-            fetch(url, {headers})
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data)
-                    setCategories(data);
-                });
+            try {
+                fetch(url, {headers})
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data)
+                        setCategories(data);
+                    });
+            } catch (err) {
+                console.log(err);
+            }
+                
+            
         };
-
         fetchData();
     }, []);
 
