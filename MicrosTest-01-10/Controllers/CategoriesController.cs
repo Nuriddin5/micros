@@ -1,40 +1,45 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MicrosTest_01_10.Context;
+using MicrosTest_01_10.Dtos;
 using MicrosTest_01_10.Models;
+using MicrosTest_01_10.Services;
 
 namespace MicrosTest_01_10.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase
     {
         private readonly ApiDbContext _context;
+        private readonly ICategoryService _service;
 
-        public CategoriesController(ApiDbContext context)
+        public CategoriesController(ApiDbContext context, ICategoryService service)
         {
             _context = context;
+            _service = service;
         }
 
-        // GET: api/Categories
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
-        {
-            return await _context.Categories.ToListAsync();
-        }
 
-        // GET: api/Categories/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        // GET: api/Categories/user
+        [Authorize]
+        [HttpGet("User")]
+        public ActionResult<List<Category>> GetCategoriesByUser()
         {
-            var category = await _context.Categories.FindAsync(id);
-
-            if (category == null)
+            List<Category> categories;
+            try
             {
-                return NotFound();
+                var username = HttpContext.User.Identity?.Name;
+                categories = _service.GetCategoriesByUser(username);
+            }
+            catch (System.Exception e)
+            {
+                return BadRequest(e.Message);
             }
 
-            return category;
+            return Ok(categories);
         }
 
         // PUT: api/Categories/5
@@ -67,12 +72,20 @@ namespace MicrosTest_01_10.Controllers
 
         // POST: api/Categories
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        public ActionResult<Category> PostCategory(CategoryDto categoryDto)
         {
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
+            Category category;
+            try
+            {
+                var username = HttpContext.User.Identity?.Name;
+                category = _service.AddCategory(categoryDto, username);
+            }
+            catch (System.Exception e)
+            {
+                return BadRequest(e.Message);
+            }
 
-            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
+            return Ok(category);
         }
 
         // DELETE: api/Categories/5

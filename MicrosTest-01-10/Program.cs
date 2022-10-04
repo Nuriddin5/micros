@@ -31,6 +31,7 @@ namespace MicrosTest_01_10
                 opt.UseNpgsql(builder.Configuration.GetConnectionString("Connection")));
 
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
 
             var app = builder.Build();
 

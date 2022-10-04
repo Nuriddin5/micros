@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace MicrosTest_01_10.Models;
 
 public class Category
@@ -8,5 +10,6 @@ public class Category
 
     public bool IsIncome { get; set; }
 
+    [JsonIgnore]
     public User? User { get; set; }
 }

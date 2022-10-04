@@ -38,7 +38,7 @@ public class BasicAuthHandler : AuthenticationHandler<AuthenticationSchemeOption
 
             var claim = new[] { new Claim(ClaimTypes.Name, username) };
             var identity = new ClaimsIdentity(claim, Scheme.Name);
-            var principal = new ClaimsPrincipal(identity);
+            var principal = new ClaimsPrincipal(identity);  
             var ticket = new AuthenticationTicket(principal, Scheme.Name);
 
             return AuthenticateResult.Success(ticket);
