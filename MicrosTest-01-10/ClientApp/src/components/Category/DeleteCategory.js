@@ -27,14 +27,14 @@ export default function DeleteCategory() {
         } catch (err) {
             console.log(err)
         }
-        window.location.reload();
+        // window.location.reload();
 
     };
 
     deleteCategory();
 
     return (
-        <Navigate to="/" replace={true}/>
+        <Navigate to="/categories" replace={true}/>
     )
 }
 

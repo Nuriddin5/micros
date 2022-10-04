@@ -37,7 +37,12 @@ public class CategoryService : ICategoryService
 
     public Category AddCategory(CategoryDto categoryDto, string username)
     {
+        
         var user = UserChecking(username);
+        if (string.IsNullOrEmpty(categoryDto.Name))
+        {
+            throw new CustomException("Category name can't be empty!");
+        }
 
         Category category = new()
         {

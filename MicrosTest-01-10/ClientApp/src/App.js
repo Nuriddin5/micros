@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Route, Routes, Navigate} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import {Layout} from './components/Layout';
 import './custom.css';
 import Login from "./components/Login/Login";
@@ -8,6 +8,7 @@ import Home from "./components/Home";
 import Logout from "./components/Logout";
 import Categories from "./components/Category/Categories";
 import DeleteCategory from "./components/Category/DeleteCategory";
+import AddCategory from "./components/Category/AddCategory";
 
 export default class App extends Component {
     static displayName = App.name;
@@ -25,10 +26,13 @@ export default class App extends Component {
                 <Route path={"/login"} element={<Login/>}/>
                 <Route path={"/register"} element={<Register/>}/>
                 <Route path={"/categories"} element={<Layout children={ <Categories/>}/>}/>
+                <Route path={"/addCategory"} element={<Layout children={ <AddCategory/>}/>}/>
                 
                 <Route path={"categories/delete"}>
                     <Route path=":id" element={<DeleteCategory/>}/>
                 </Route>
+                
+                
             </Routes>
 
 

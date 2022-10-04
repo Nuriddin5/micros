@@ -14,8 +14,8 @@ export default function Categories() {
         const url = `${REACT_APP_API_ENDPOINT}/Categories/User`;
         const token = btoa(`${user.username}:${user.password}`);
         console.log(token);
-        
-        
+
+
         const fetchData = () => {
             const headers = {'Authorization': `basic ${token}`}
             try {
@@ -28,8 +28,8 @@ export default function Categories() {
             } catch (err) {
                 console.log(err);
             }
-                
-            
+
+
         };
         fetchData();
     }, []);
@@ -39,7 +39,12 @@ export default function Categories() {
 
         <div className={"container"}>
             <div className={"d-flex justify-content-center mt-5"}>
-                <h2>List of catgories user with username {user.username} </h2>
+                <h2>List of categories user with username {user.username}</h2>
+                <a href="/addCategory"> <button className={"btn btn-success ms-5"}>ADD NEW</button></a>
+            </div>
+
+            <div className={"d-flex justify-content-center"}>
+
             </div>
 
             <div className={"d-flex justify-content-center mt-5 "}>
@@ -60,7 +65,10 @@ export default function Categories() {
                         <td>{value.isIncome.toString()}</td>
                         <td className={"w-25"}>
                             <button className={"btn btn-primary mx-3"}>Edit</button>
-                            <button className={"btn btn-danger"}>Delete</button>
+                            <a href={"/categories/delete/" + value.id}>
+                                <button className={"btn btn-danger"}>Delete</button>
+                            </a>
+
                         </td>
                     </tr>)}
 
