@@ -6,10 +6,7 @@ namespace MicrosTest_01_10.Services;
 public interface ICategoryService
 {
     List<Category> GetCategoriesByUser(string username);
-    Category AddCategory(CategoryDto categoryDto,string username);
-    void DeleteCategory(int categoryId);
-    void EditCategory(CategoryDto categoryDto);
-
-
-
+    Category AddCategory(CategoryDto categoryDto, string username);
+    void DeleteCategory(int categoryId, string username);
+    void EditCategory(CategoryDto categoryDto, string username);
 }

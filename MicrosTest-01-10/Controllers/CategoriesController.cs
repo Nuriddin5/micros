@@ -90,16 +90,17 @@ namespace MicrosTest_01_10.Controllers
 
         // DELETE: api/Categories/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public IActionResult DeleteCategory(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
+            try
             {
-                return NotFound();
+                var username = HttpContext.User.Identity?.Name;
+                _service.DeleteCategory(id, username);
             }
-
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
+            catch (System.Exception e)
+            {
+                return BadRequest(e.Message);
+            }
 
             return NoContent();
         }

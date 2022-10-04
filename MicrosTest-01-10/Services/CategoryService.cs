@@ -57,13 +57,30 @@ public class CategoryService : ICategoryService
         return category;
     }
 
-    public void DeleteCategory(int categoryId)
+    public void DeleteCategory(int categoryId, string username)
     {
-        throw new NotImplementedException();
+        var user = _context.Users.FirstOrDefault(user => username!.Equals(user.UserName));
+        if (user == null)
+        {
+            throw new CustomException("Uncaught error");
+        }
+
+        var category = _context.Categories.Find(categoryId);
+        if (category == null || category.User!.Id != user.Id)
+        {
+            throw new CustomException("Problem with account");
+        }
+
+        _context.Categories.Remove(category);
+        _context.SaveChanges();
     }
 
-    public void EditCategory(CategoryDto categoryDto)
+    public void EditCategory(CategoryDto categoryDto, string username)
     {
-        throw new NotImplementedException();
+        var user = _context.Users.FirstOrDefault(user => username!.Equals(user.UserName));
+        if (user == null)
+        {
+            throw new CustomException("Uncaught error");
+        }
     }
 }
