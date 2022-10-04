@@ -11,7 +11,6 @@ export default function AddCategory() {
 
     const [categoryName, setCategoryName] = useState("")
     const [isIncome, setIncome] = useState(false)
-    
 
 
     const showToastMessage = (message, status) => {
@@ -26,7 +25,7 @@ export default function AddCategory() {
                 window.location.href = '/categories';
             }, 5000)
 
-        } else if (status === 400) {
+        } else {
             toast.error(`${message}`, {
                 position: toast.POSITION.TOP_CENTER
             });
@@ -43,7 +42,7 @@ export default function AddCategory() {
 
         console.log(categoryName);
         console.log(isIncome);
-        
+
         const url = `${REACT_APP_API_ENDPOINT}/Categories`;
         const token = btoa(`${user.username}:${user.password}`);
         console.log(token);
@@ -78,12 +77,11 @@ export default function AddCategory() {
 
     const handleChange = (event) => {
         setCategoryName(event.target.value);
-    }; 
-    const handleChange2 = (event) => {
-       setIncome(event.target.value === "True")
     };
-    
-    
+    const handleChange2 = (event) => {
+        console.log(event.target.value);
+        setIncome(event.target.value === "true")
+    };
 
 
     return (

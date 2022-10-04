@@ -37,8 +37,13 @@ public class CategoryService : ICategoryService
 
     public Category AddCategory(CategoryDto categoryDto, string username)
     {
-        
         var user = UserChecking(username);
+        var isCategoryExistsForUser = _context.Categories.Any(c => c.Name!.Equals(categoryDto.Name) && c.User!.Id == user!.Id);
+        if (isCategoryExistsForUser)
+        {
+            throw new CustomException("You already add this category name!");
+        }
+
         if (string.IsNullOrEmpty(categoryDto.Name))
         {
             throw new CustomException("Category name can't be empty!");
