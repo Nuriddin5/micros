@@ -1,2 +1,0 @@
-C:\Users\zuxra\Desktop\Micros\ForDeploying\micros\micros-react-client\obj\Debug\micros-react-client.esproj.SuggestedBindingRedirects.cache
-C:\Users\zuxra\Desktop\Micros\ForDeploying\micros\micros-react-client\obj\Debug\micros-react-client.esproj.CoreCompileInputs.cache

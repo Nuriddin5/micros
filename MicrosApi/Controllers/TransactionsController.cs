@@ -18,18 +18,18 @@ namespace MicrosApi.Controllers
             _context = context;
         }
 
-        // GET: api/Transactions
+        // GET: api/transactions
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactions()
         {
-            return await _context.Transactions.ToListAsync();
+            return await _context.transactions.ToListAsync();
         }
 
-        // GET: api/Transactions/5
+        // GET: api/transactions/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Transaction>> GetTransaction(int id)
         {
-            var transaction = await _context.Transactions.FindAsync(id);
+            var transaction = await _context.transactions.FindAsync(id);
 
             if (transaction == null)
             {
@@ -39,7 +39,7 @@ namespace MicrosApi.Controllers
             return transaction;
         }
 
-        // PUT: api/Transactions/5
+        // PUT: api/transactions/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTransaction(int id, Transaction transaction)
         {
@@ -67,27 +67,27 @@ namespace MicrosApi.Controllers
             return NoContent();
         }
 
-        // POST: api/Transactions
+        // POST: api/transactions
         [HttpPost]
         public async Task<ActionResult<Transaction>> PostTransaction(Transaction transaction)
         {
-            _context.Transactions.Add(transaction);
+            _context.transactions.Add(transaction);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetTransaction", new { id = transaction.Id }, transaction);
         }
 
-        // DELETE: api/Transactions/5
+        // DELETE: api/transactions/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTransaction(int id)
         {
-            var transaction = await _context.Transactions.FindAsync(id);
+            var transaction = await _context.transactions.FindAsync(id);
             if (transaction == null)
             {
                 return NotFound();
             }
 
-            _context.Transactions.Remove(transaction);
+            _context.transactions.Remove(transaction);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -95,7 +95,7 @@ namespace MicrosApi.Controllers
 
         private bool TransactionExists(int id)
         {
-            return _context.Transactions.Any(e => e.Id == id);
+            return _context.transactions.Any(e => e.Id == id);
         }
     }
 }

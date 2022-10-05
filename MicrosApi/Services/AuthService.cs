@@ -28,7 +28,7 @@ public class AuthService : IAuthService
         if (string.IsNullOrEmpty(username) || username.Length < 2)
             throw new CustomException("Usernames length should be 3 character minimum");
 
-        bool isUserNameExists = _context.Users.Any(user =>
+        bool isUserNameExists = _context.users.Any(user =>
             username.Equals(user.UserName));
 
         if (isUserNameExists)
@@ -69,7 +69,7 @@ public class AuthService : IAuthService
         if (string.IsNullOrEmpty(username) || username.Length < 2)
             throw new CustomException("Usernames length should be 3 character minimum");
 
-        bool isUserNameExists = _context.Users.Any(user =>
+        bool isUserNameExists = _context.users.Any(user =>
             username.Equals(user.UserName));
 
         if (!isUserNameExists)
@@ -77,7 +77,7 @@ public class AuthService : IAuthService
             throw new CustomException("Username or password incorrect");
         }
 
-        var user = _context.Users.Single(user => username.Equals(user.UserName));
+        var user = _context.users.Single(user => username.Equals(user.UserName));
 
         if (string.IsNullOrEmpty(loginDto.Password) || loginDto.Password.Length < 6)
             throw new CustomException("Username or password incorrect");

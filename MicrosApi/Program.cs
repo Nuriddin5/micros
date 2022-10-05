@@ -18,7 +18,7 @@ namespace MicrosApi
             builder.Services.AddScoped<ICategoryService, CategoryService>();
 
             builder.Services.AddEntityFrameworkNpgsql().AddDbContext<ApiDbContext>(opt =>
-                opt.UseNpgsql(builder.Configuration.GetConnectionString("Connection")));
+                opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services
                 .AddAuthentication("BasicAuthHandler")

@@ -16,8 +16,8 @@ namespace MicrosApi.Context
                 .IsUnique();
         }
 
-        public virtual DbSet<Category> Categories { get; set; }
-        public virtual DbSet<Transaction> Transactions { get; set; }
-        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Category> categories { get; set; }
+        public virtual DbSet<Transaction> transactions { get; set; }
+        public virtual DbSet<User> users { get; set; }
     }
 }

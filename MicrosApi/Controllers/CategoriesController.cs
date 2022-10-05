@@ -56,7 +56,7 @@ namespace MicrosApi.Controllers
                 return BadRequest(e.Message);
             }
 
-            return NoContent();
+            return Ok("Successfully edited");
         }
 
         // POST: api/Categories

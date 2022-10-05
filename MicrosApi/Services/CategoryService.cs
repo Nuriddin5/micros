@@ -1,6 +1,5 @@
 ﻿using MicrosApi.Dtos;
 using MicrosApi.Exception;
-using MicrosApi.Services;
 using Microsoft.EntityFrameworkCore;
 using MicrosApi.Context;
 using MicrosApi.Models;
@@ -24,12 +23,12 @@ public class CategoryService : ICategoryService
         {
             var user = UserChecking(username);
 
-            categories = _context.Categories.Where(category => category.User!.Id == user.Id)
+            categories = _context.categories.Where(category => category.User!.Id == user.Id)
                 .ToList();
         }
         catch (System.Exception e)
         {
-            throw new CustomException("Uncaught error");
+            throw new CustomException(e.Message);
         }
 
         return categories;
@@ -40,7 +39,7 @@ public class CategoryService : ICategoryService
     {
         var user = UserChecking(username);
         var isCategoryExistsForUser =
-            _context.Categories.Any(c => c.Name!.Equals(categoryDto.Name) && c.User!.Id == user!.Id);
+            _context.categories.Any(c => c.Name!.Equals(categoryDto.Name) && c.User!.Id == user.Id);
         if (isCategoryExistsForUser)
         {
             throw new CustomException("You already add this category name!");
@@ -57,7 +56,7 @@ public class CategoryService : ICategoryService
             IsIncome = categoryDto.IsIncome,
             User = user
         };
-        _context.Categories.Add(category);
+        _context.categories.Add(category);
         _context.SaveChanges();
 
         return category;
@@ -69,7 +68,7 @@ public class CategoryService : ICategoryService
 
         CategoryValidChecking(categoryId, user, out var category);
 
-        _context.Categories.Remove(category);
+        _context.categories.Remove(category!);
         _context.SaveChanges();
     }
 
@@ -80,14 +79,12 @@ public class CategoryService : ICategoryService
 
         CategoryValidChecking(categoryId, user, out var category);
 
-        var isCategoryExistsForUser =
-            _context.Categories.Any(c => c.Name!.Equals(category!.Name) && c.User!.Id == user!.Id);
-        if (isCategoryExistsForUser)
+        if (category!.Name!.Equals(categoryDto.Name) && category.IsIncome == categoryDto.IsIncome)
         {
-            throw new CustomException("You already add this category name!");
+            throw new CustomException("You should edit or back!");
         }
 
-        category!.Name = categoryDto.Name;
+        category.Name = categoryDto.Name;
         category.IsIncome = categoryDto.IsIncome;
 
         _context.Entry(category).State = EntityState.Modified;
@@ -98,16 +95,16 @@ public class CategoryService : ICategoryService
 
     private void CategoryValidChecking(int categoryId, User? user, out Category? category)
     {
-        category = _context.Categories.Find(categoryId);
-        if (category == null || category.User!.Id != user.Id)
+        category = _context.categories.Find(categoryId);
+        if (category == null || category.User!.Id != user!.Id)
         {
             throw new CustomException("Problem with account");
         }
     }
 
-    private User? UserChecking(string username)
+    private User UserChecking(string username)
     {
-        var user = _context.Users.FirstOrDefault(user => username!.Equals(user.UserName));
+        var user = _context.users.FirstOrDefault(user => username.Equals(user.UserName));
         if (user == null)
         {
             throw new CustomException("Uncaught error");
