@@ -58,6 +58,10 @@ namespace MicrosApi.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("Amount")
+                        .HasColumnType("integer")
+                        .HasColumnName("amount");
+
                     b.Property<int?>("CategoryId")
                         .HasColumnType("integer");
 

@@ -53,6 +53,7 @@ namespace MicrosApi.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     is_income = table.Column<bool>(type: "boolean", nullable: false),
+                    amount = table.Column<int>(type: "integer", nullable: false),
                     CategoryId = table.Column<int>(type: "integer", nullable: true),
                     comment = table.Column<string>(type: "text", nullable: true),
                     UserId = table.Column<int>(type: "integer", nullable: true)

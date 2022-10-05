@@ -11,7 +11,10 @@ public class Transaction
     public DateTime Date { get; set; }
 
     [Column("is_income")]
-    public bool IsIncome { get; set; }
+    public bool IsIncome { get; set; } 
+    
+    [Column("amount")]
+    public int Amount { get; set; }
 
     [Column("category_id")]
     public Category? Category { get; set; }
