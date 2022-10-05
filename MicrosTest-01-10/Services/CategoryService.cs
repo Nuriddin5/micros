@@ -38,7 +38,8 @@ public class CategoryService : ICategoryService
     public Category AddCategory(CategoryDto categoryDto, string username)
     {
         var user = UserChecking(username);
-        var isCategoryExistsForUser = _context.Categories.Any(c => c.Name!.Equals(categoryDto.Name) && c.User!.Id == user!.Id);
+        var isCategoryExistsForUser =
+            _context.Categories.Any(c => c.Name!.Equals(categoryDto.Name) && c.User!.Id == user!.Id);
         if (isCategoryExistsForUser)
         {
             throw new CustomException("You already add this category name!");
@@ -77,6 +78,13 @@ public class CategoryService : ICategoryService
         var user = UserChecking(username);
 
         CategoryValidChecking(categoryId, user, out var category);
+
+        var isCategoryExistsForUser =
+            _context.Categories.Any(c => c.Name!.Equals(category!.Name) && c.User!.Id == user!.Id);
+        if (isCategoryExistsForUser)
+        {
+            throw new CustomException("You already add this category name!");
+        }
 
         category!.Name = categoryDto.Name;
         category.IsIncome = categoryDto.IsIncome;

@@ -13,6 +13,10 @@ namespace MicrosTest_01_10
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            builder.Services.AddEntityFrameworkNpgsql().AddDbContext<ApiDbContext>(opt =>
+               opt.UseNpgsql(builder.Configuration.GetConnectionString("Connection")));
+
             builder.Services
                 .AddAuthentication("BasicAuthHandler")
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthHandler>("BasicAuthHandler", _ => { });
@@ -27,8 +31,7 @@ namespace MicrosTest_01_10
                 });
             });
 
-            builder.Services.AddEntityFrameworkNpgsql().AddDbContext<ApiDbContext>(opt =>
-                opt.UseNpgsql(builder.Configuration.GetConnectionString("Connection")));
+            
 
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
@@ -38,7 +41,6 @@ namespace MicrosTest_01_10
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
