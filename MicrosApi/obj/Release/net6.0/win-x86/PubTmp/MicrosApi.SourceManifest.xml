@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sitemanifest>
+  <IisApp path="C:\Users\zuxra\Desktop\Micros\ForDeploying\micros\MicrosApi\obj\Release\net6.0\win-x86\PubTmp\Out\" />
+  <dbfullsql path="C:\Users\zuxra\Desktop\Micros\ForDeploying\micros\MicrosApi\obj\Release\net6.0\win-x86\PubTmp\EFSQLScripts\MicrosApi.Context.ApiDbContext.sql" />
+</sitemanifest>

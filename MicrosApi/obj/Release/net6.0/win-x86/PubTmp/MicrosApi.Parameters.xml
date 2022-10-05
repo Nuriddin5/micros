@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="MicrosApi20221005184744" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\zuxra\\Desktop\\Micros\\ForDeploying\\micros\\MicrosApi\\obj\\Release\\net6\.0\\win-x86\\PubTmp\\Out\\$" />
+  </parameter>
+  <parameter name="MicrosApi.Context.ApiDbContext" description="" value="Data Source=tcp:microsapidbserver.database.windows.net,1433;Initial Catalog=MicrosApi_db;User Id=vllsryvfxw@microsapidbserver;Password=T07A82ZS16A60CRE$" tags="dbfullsql">
+    <parameterEntry kind="ProviderPath" scope="dbfullsql" match="^C:\\Users\\zuxra\\Desktop\\Micros\\ForDeploying\\micros\\MicrosApi\\obj\\Release\\net6\.0\\win-x86\\PubTmp\\EFSQLScripts\\MicrosApi\.Context\.ApiDbContext\.sql$" />
+  </parameter>
+</parameters>

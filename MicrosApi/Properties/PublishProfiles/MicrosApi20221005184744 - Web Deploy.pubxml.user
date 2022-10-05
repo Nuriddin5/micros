@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAAdH7HMrBjEeHUlaMWlgvaQAAAAACAAAAAAAQZgAAAAEAACAAAAClQJYjLhiemNzD5daP1xvJAonawbYo28db+NQQ+8cEBQAAAAAOgAAAAAIAACAAAACnOApao+uH4sxBY3i5rrrIUY4U67TKVaYPXvhEcSAl04AAAAAFditV0YkhuSzp7+nnOmWPPigSRS8ndx3eJuOcjtbN3Y9pMbRNGP9iNWgVu38Q7hgQONJeRxICS695xX9I2qRXV0WDB7HD6vfE+7qRP45JolPlwCF8Ug9EF2ZXKM0ssSHZ9WfdTLVA+FVdfoerun0zYkF+kGRLsFx11ssy7iMxVEAAAADpCz4ZGSDTE/pY60UR1Z6h3pxEVjGVtV6edTvCTpM3QzzpYQQpmhXafokyfH6HxQD1vIGhgRub/5uP0dr89tnY</EncryptedPassword>
+    <History>False|2022-10-05T14:34:42.8170369Z;True|2022-10-05T19:09:07.0586907+05:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <EFMigrations Include="MicrosApi.Context.ApiDbContext">
+      <Value>Data Source=tcp:microsapidbserver.database.windows.net,1433%3bInitial Catalog=MicrosApi_db%3bUser Id=vllsryvfxw%40microsapidbserver%3bPassword=T07A82ZS16A60CRE%24</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Route, Routes} from 'react-router-dom';
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import {Layout} from './components/Layout';
 import './custom.css';
 import Login from "./components/Login/Login";
@@ -16,24 +16,25 @@ export default class App extends Component {
     render() {
         return (
 
+            <BrowserRouter>
+                <Routes>
 
-            <Routes>
+                    <Route path={"/"} element={
+                        localStorage.getItem('user') ?
+                            <Layout children={<Home/>}/> : <Login/>}/>
+                    <Route path={"/logout"} element={<Logout/>}/>
+                    <Route path={"/login"} element={<Login/>}/>
+                    <Route path={"/register"} element={<Register/>}/>
+                    <Route path={"/categories"} element={<Layout children={<Categories/>}/>}/>
+                    <Route path={"/addCategory"} element={<Layout children={<AddCategory/>}/>}/>
 
-                <Route path={"/"} element={
-                    localStorage.getItem('user') ?
-                        <Layout children={<Home/>}/> : <Login/>}/>
-                <Route path={"/logout"} element={<Logout/>}/>
-                <Route path={"/login"} element={<Login/>}/>
-                <Route path={"/register"} element={<Register/>}/>
-                <Route path={"/categories"} element={<Layout children={ <Categories/>}/>}/>
-                <Route path={"/addCategory"} element={<Layout children={ <AddCategory/>}/>}/>
-                
-                <Route path={"categories/delete"}>
-                    <Route path=":id" element={<DeleteCategory/>}/>
-                </Route>
-                
-                
-            </Routes>
+                    <Route path={"categories/delete"}>
+                        <Route path=":id" element={<DeleteCategory/>}/>
+                    </Route>
+
+
+                </Routes>
+            </BrowserRouter>
 
 
         )
