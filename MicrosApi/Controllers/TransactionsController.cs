@@ -1,101 +1,96 @@
 ﻿using MicrosApi.Context;
+using MicrosApi.Dtos;
 using MicrosApi.Models;
+using MicrosApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MicrosApi.Context;
-using MicrosApi.Models;
 
 namespace MicrosApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TransactionsController : ControllerBase
     {
         private readonly ApiDbContext _context;
+        private readonly ITransactionService _service;
 
-        public TransactionsController(ApiDbContext context)
+        public TransactionsController(ApiDbContext context, ITransactionService service)
         {
             _context = context;
+            _service = service;
         }
 
-        // GET: api/transactions
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactions()
+
+        // GET: api/Transactions/user
+        [Authorize]
+        [HttpGet("User")]
+        public ActionResult<List<Transaction>> GetTransactionsByUser()
         {
-            return await _context.transactions.ToListAsync();
-        }
-
-        // GET: api/transactions/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Transaction>> GetTransaction(int id)
-        {
-            var transaction = await _context.transactions.FindAsync(id);
-
-            if (transaction == null)
-            {
-                return NotFound();
-            }
-
-            return transaction;
-        }
-
-        // PUT: api/transactions/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTransaction(int id, Transaction transaction)
-        {
-            if (id != transaction.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(transaction).State = EntityState.Modified;
-
+            List<Transaction> transactions;
             try
             {
-                await _context.SaveChangesAsync();
+                var username = HttpContext.User.Identity?.Name;
+                transactions = _service.GetTransactionsByUser(username);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (System.Exception e)
             {
-                if (!TransactionExists(id))
-                {
-                    return NotFound();
-                }
-
-                throw;
+                return BadRequest(e.Message);
             }
 
-            return NoContent();
+            return Ok(transactions);
         }
 
-        // POST: api/transactions
+        // PUT: api/Transactions/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutTransaction(int id, TransactionDto transactionDto)
+        {
+            try
+            {
+                var username = HttpContext.User.Identity?.Name;
+                _service.EditTransaction(id, transactionDto, username);
+            }
+            catch (System.Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+            return Ok("Successfully edited");
+        }
+
+        // POST: api/Transactions
         [HttpPost]
-        public async Task<ActionResult<Transaction>> PostTransaction(Transaction transaction)
+        public ActionResult<Transaction> PostTransaction(TransactionDto transactionDto)
         {
-            _context.transactions.Add(transaction);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetTransaction", new { id = transaction.Id }, transaction);
-        }
-
-        // DELETE: api/transactions/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTransaction(int id)
-        {
-            var transaction = await _context.transactions.FindAsync(id);
-            if (transaction == null)
+            Transaction transaction;
+            try
             {
-                return NotFound();
+                var username = HttpContext.User.Identity?.Name;
+                transaction = _service.AddTransaction(transactionDto, username);
+            }
+            catch (System.Exception e)
+            {
+                return BadRequest(e.Message);
             }
 
-            _context.transactions.Remove(transaction);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return Ok(transaction);
         }
 
-        private bool TransactionExists(int id)
+        // DELETE: api/Transactions/5
+        [HttpDelete("{id}")]
+        public IActionResult DeleteTransaction(int id)
         {
-            return _context.transactions.Any(e => e.Id == id);
+            try
+            {
+                var username = HttpContext.User.Identity?.Name;
+                _service.DeleteTransaction(id, username);
+            }
+            catch (System.Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+            return NoContent();
         }
     }
 }
