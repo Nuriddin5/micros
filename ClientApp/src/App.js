@@ -11,6 +11,7 @@ import DeleteCategory from "./components/Category/DeleteCategory";
 import AddCategory from "./components/Category/AddCategory";
 import EditCategory from "./components/Category/EditCategory";
 import AddTransaction from "./components/Transaction/AddTransaction";
+import DeleteTransaction from "./components/Transaction/DeleteTransaction";
 
 export default class App extends Component {
     static displayName = App.name;
@@ -33,6 +34,9 @@ export default class App extends Component {
                 
                 <Route path={"categories/delete"}>
                     <Route path=":id" element={<DeleteCategory/>}/>
+                </Route>
+                <Route path={"transactions/delete"}>
+                    <Route path=":id" element={<DeleteTransaction/>}/>
                 </Route>
                 <Route path={"categories/edit"}>
                     <Route path=":id" element={<Layout children={ <EditCategory/>}/>}/>
