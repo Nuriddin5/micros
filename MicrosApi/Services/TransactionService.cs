@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections.Immutable;
+using System.Globalization;
 using MicrosApi.Dtos;
 using MicrosApi.Exception;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +25,9 @@ public class TransactionService : ITransactionService
         {
             var user = UserChecking(username);
 
-            transactions = _context.transactions.Where(transaction => transaction.User!.Id == user.Id)
-                .ToList();
+            _context.transaction.Find(1);
+            transactions = new List<Transaction>(_context.transaction.Where(transaction => transaction.Category != null)
+                .ToImmutableList());
         }
         catch (System.Exception e)
         {
@@ -56,8 +58,8 @@ public class TransactionService : ITransactionService
             throw new CustomException("Transaction amount can be real!");
         }
 
-        var category = _context.categories.FirstOrDefault(category =>
-            category.Name!.Equals(transactionDto.CategoryName) && category.User!.Id == transactionDto.UserId);
+        var category = _context.category.FirstOrDefault(category =>
+            category.Name!.Equals(transactionDto.CategoryName) && category.UserId == user.Id);
 
         if (category == null)
         {
@@ -66,19 +68,20 @@ public class TransactionService : ITransactionService
 
         if (category.IsIncome != transactionDto.IsIncome)
         {
-            throw new CustomException("Category's for income(or expense)!");
+            throw new CustomException("Category is only for income(or expense)!");
         }
 
 
         Transaction transaction = new()
         {
+            Amount = transactionDto.Amount,
             Date = Convert.ToDateTime(transactionDto.Date),
             Category = category,
             IsIncome = transactionDto.IsIncome,
             User = user,
             Comment = transactionDto.Comment
         };
-        _context.transactions.Add(transaction);
+        _context.transaction.Add(transaction);
         _context.SaveChanges();
 
         return transaction;
@@ -90,7 +93,7 @@ public class TransactionService : ITransactionService
 
         TransactionValidChecking(transactionId, user, out var transaction);
 
-        _context.transactions.Remove(transaction!);
+        _context.transaction.Remove(transaction!);
         _context.SaveChanges();
     }
 
@@ -115,8 +118,8 @@ public class TransactionService : ITransactionService
             throw new CustomException("Transaction amount can be real!");
         }
 
-        var category = _context.categories.FirstOrDefault(category =>
-            category.Name!.Equals(transactionDto.CategoryName) && category.User!.Id == transactionDto.UserId);
+        var category = _context.category.FirstOrDefault(category =>
+            category.Name!.Equals(transactionDto.CategoryName) && category.UserId == user.Id);
 
         if (category == null)
         {
@@ -127,7 +130,6 @@ public class TransactionService : ITransactionService
         {
             throw new CustomException("Category's for income(or expense)!");
         }
-        
 
 
         TransactionValidChecking(transactionId, user, out var transaction);
@@ -153,7 +155,7 @@ public class TransactionService : ITransactionService
 
     private void TransactionValidChecking(int transactionId, User? user, out Transaction? transaction)
     {
-        transaction = _context.transactions.Find(transactionId);
+        transaction = _context.transaction.Find(transactionId);
         if (transaction == null || transaction.User!.Id != user!.Id)
         {
             throw new CustomException("Problem with account");
@@ -162,7 +164,7 @@ public class TransactionService : ITransactionService
 
     private User UserChecking(string username)
     {
-        var user = _context.users.FirstOrDefault(user => username.Equals(user.UserName));
+        var user = _context.user.FirstOrDefault(user => username.Equals(user.UserName));
         if (user == null)
         {
             throw new CustomException("Uncaught error");

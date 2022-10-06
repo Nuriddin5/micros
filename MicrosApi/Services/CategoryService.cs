@@ -23,7 +23,7 @@ public class CategoryService : ICategoryService
         {
             var user = UserChecking(username);
 
-            categories = _context.categories.Where(category => category.User!.Id == user.Id)
+            categories = _context.category.Where(category => category.UserId == user.Id)
                 .ToList();
         }
         catch (System.Exception e)
@@ -39,7 +39,7 @@ public class CategoryService : ICategoryService
     {
         var user = UserChecking(username);
         var isCategoryExistsForUser =
-            _context.categories.Any(c => c.Name!.Equals(categoryDto.Name) && c.User!.Id == user.Id);
+            _context.category.Any(c => c.Name!.Equals(categoryDto.Name) && c.UserId == user.Id);
         if (isCategoryExistsForUser)
         {
             throw new CustomException("You already add this category name!");
@@ -54,9 +54,9 @@ public class CategoryService : ICategoryService
         {
             Name = categoryDto.Name,
             IsIncome = categoryDto.IsIncome,
-            User = user
+            UserId = user.Id
         };
-        _context.categories.Add(category);
+        _context.category.Add(category);
         _context.SaveChanges();
 
         return category;
@@ -68,7 +68,7 @@ public class CategoryService : ICategoryService
 
         CategoryValidChecking(categoryId, user, out var category);
 
-        _context.categories.Remove(category!);
+        _context.category.Remove(category!);
         _context.SaveChanges();
     }
 
@@ -95,8 +95,8 @@ public class CategoryService : ICategoryService
 
     private void CategoryValidChecking(int categoryId, User? user, out Category? category)
     {
-        category = _context.categories.Find(categoryId);
-        if (category == null || category.User!.Id != user!.Id)
+        category = _context.category.Find(categoryId);
+        if (category == null || category.UserId != user!.Id)
         {
             throw new CustomException("Problem with account");
         }
@@ -104,7 +104,7 @@ public class CategoryService : ICategoryService
 
     private User UserChecking(string username)
     {
-        var user = _context.users.FirstOrDefault(user => username.Equals(user.UserName));
+        var user = _context.user.FirstOrDefault(user => username.Equals(user.UserName));
         if (user == null)
         {
             throw new CustomException("Uncaught error");

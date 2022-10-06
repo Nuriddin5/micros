@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "Ud4+y8tiF/2pHvnlOrjPCYOeEXQ+6m8jaWzBpL4JnPx1smUDbc5PafVMze3jN4kIeQ6nSVpPOK0y4d2QgegYdA==",
+  "dgSpecHash": "8+FAEIuvSfD+ElU0eM8Rlz2VCeJFDw+hPqvGy95sCvjXATHla1IPN8h/nKLoZeYmGJBPuHajSYDPBvxCqdO2dA==",
   "success": true,
   "projectFilePath": "C:\\Users\\zuxra\\Desktop\\Micros\\ForDeploying\\micros\\MicrosApi\\MicrosApi.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\zuxra\\.nuget\\packages\\efcore.namingconventions\\6.0.0\\efcore.namingconventions.6.0.0.nupkg.sha512",
     "C:\\Users\\zuxra\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\zuxra\\.nuget\\packages\\messagepack\\2.1.152\\messagepack.2.1.152.nupkg.sha512",
     "C:\\Users\\zuxra\\.nuget\\packages\\messagepack.annotations\\2.1.152\\messagepack.annotations.2.1.152.nupkg.sha512",

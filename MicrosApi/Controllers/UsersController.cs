@@ -22,14 +22,14 @@ namespace MicrosApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> Getusers()
         {
-            return await _context.users.ToListAsync();
+            return await _context.user.ToListAsync();
         }
 
         // GET: api/users/5
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-            var user = await _context.users.FindAsync(id);
+            var user = await _context.user.FindAsync(id);
 
             if (user == null)
             {
@@ -71,7 +71,7 @@ namespace MicrosApi.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
-            _context.users.Add(user);
+            _context.user.Add(user);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
@@ -81,13 +81,13 @@ namespace MicrosApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            var user = await _context.users.FindAsync(id);
+            var user = await _context.user.FindAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
 
-            _context.users.Remove(user);
+            _context.user.Remove(user);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -95,7 +95,7 @@ namespace MicrosApi.Controllers
 
         private bool UserExists(int id)
         {
-            return _context.users.Any(e => e.Id == id);
+            return _context.user.Any(e => e.Id == id);
         }
     }
 }

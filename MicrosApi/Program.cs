@@ -13,6 +13,8 @@ namespace MicrosApi
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
@@ -20,6 +22,8 @@ namespace MicrosApi
 
             builder.Services.AddEntityFrameworkNpgsql().AddDbContext<ApiDbContext>(opt =>
                 opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+            
+            
 
             builder.Services
                 .AddAuthentication("BasicAuthHandler")

@@ -31,7 +31,7 @@ public class BasicAuthHandler : AuthenticationHandler<AuthenticationSchemeOption
             string[] array = credentials.Split(":");
             string username = array[0];
             string password = array[1];
-            var user = _context.users.FirstOrDefault(item =>
+            var user = _context.user.FirstOrDefault(item =>
                 item.UserName == username && item.Password == password);
             if (user == null)
                 return AuthenticateResult.Fail("UnAuthorized");

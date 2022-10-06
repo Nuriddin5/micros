@@ -10,6 +10,7 @@ import Categories from "./components/Category/Categories";
 import DeleteCategory from "./components/Category/DeleteCategory";
 import AddCategory from "./components/Category/AddCategory";
 import EditCategory from "./components/Category/EditCategory";
+import AddTransaction from "./components/Transaction/AddTransaction";
 
 export default class App extends Component {
     static displayName = App.name;
@@ -28,6 +29,7 @@ export default class App extends Component {
                 <Route path={"/register"} element={<Register/>}/>
                 <Route path={"/categories"} element={<Layout children={ <Categories/>}/>}/>
                 <Route path={"/addCategory"} element={<Layout children={ <AddCategory/>}/>}/>
+                <Route path={"/addTransaction"} element={<Layout children={ <AddTransaction/>}/>}/>
                 
                 <Route path={"categories/delete"}>
                     <Route path=":id" element={<DeleteCategory/>}/>

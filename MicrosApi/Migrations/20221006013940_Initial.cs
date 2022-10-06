@@ -11,7 +11,22 @@ namespace MicrosApi.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "users",
+                name: "category",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "text", nullable: true),
+                    is_income = table.Column<bool>(type: "boolean", nullable: false),
+                    user_id = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_category", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "user",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -22,31 +37,11 @@ namespace MicrosApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_users", x => x.id);
+                    table.PrimaryKey("pk_user", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "categories",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "text", nullable: true),
-                    is_income = table.Column<bool>(type: "boolean", nullable: false),
-                    UserId = table.Column<int>(type: "integer", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_categories", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_categories_users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "users",
-                        principalColumn: "id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "transactions",
+                name: "transaction",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -54,43 +49,40 @@ namespace MicrosApi.Migrations
                     date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     is_income = table.Column<bool>(type: "boolean", nullable: false),
                     amount = table.Column<int>(type: "integer", nullable: false),
-                    CategoryId = table.Column<int>(type: "integer", nullable: true),
+                    category_id = table.Column<int>(type: "integer", nullable: false),
                     comment = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<int>(type: "integer", nullable: true)
+                    user_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_transactions", x => x.id);
+                    table.PrimaryKey("pk_transaction", x => x.id);
                     table.ForeignKey(
-                        name: "FK_transactions_categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "categories",
-                        principalColumn: "id");
+                        name: "fk_transaction_category_category_id",
+                        column: x => x.category_id,
+                        principalTable: "category",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_transactions_users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "users",
-                        principalColumn: "id");
+                        name: "fk_transaction_user_user_id",
+                        column: x => x.user_id,
+                        principalTable: "user",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_categories_UserId",
-                table: "categories",
-                column: "UserId");
+                name: "ix_transaction_category_id",
+                table: "transaction",
+                column: "category_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_transactions_CategoryId",
-                table: "transactions",
-                column: "CategoryId");
+                name: "ix_transaction_user_id",
+                table: "transaction",
+                column: "user_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_transactions_UserId",
-                table: "transactions",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_users_user_name",
-                table: "users",
+                name: "ix_user_user_name",
+                table: "user",
                 column: "user_name",
                 unique: true);
         }
@@ -98,13 +90,13 @@ namespace MicrosApi.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "transactions");
+                name: "transaction");
 
             migrationBuilder.DropTable(
-                name: "categories");
+                name: "category");
 
             migrationBuilder.DropTable(
-                name: "users");
+                name: "user");
         }
     }
 }

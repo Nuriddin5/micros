@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MicrosApi.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20221005215955_Initial")]
+    [Migration("20221006013940_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,14 +41,14 @@ namespace MicrosApi.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_category");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("categories");
+                    b.ToTable("category", (string)null);
                 });
 
             modelBuilder.Entity("MicrosApi.Models.Transaction", b =>
@@ -64,8 +64,9 @@ namespace MicrosApi.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("amount");
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("integer");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer")
+                        .HasColumnName("category_id");
 
                     b.Property<string>("Comment")
                         .HasColumnType("text")
@@ -79,16 +80,20 @@ namespace MicrosApi.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_income");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_transaction");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryId")
+                        .HasDatabaseName("ix_transaction_category_id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_transaction_user_id");
 
-                    b.ToTable("transactions");
+                    b.ToTable("transaction", (string)null);
                 });
 
             modelBuilder.Entity("MicrosApi.Models.User", b =>
@@ -112,32 +117,31 @@ namespace MicrosApi.Migrations
                         .HasColumnType("text")
                         .HasColumnName("user_name");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_user");
 
                     b.HasIndex("UserName")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_user_user_name");
 
-                    b.ToTable("users");
-                });
-
-            modelBuilder.Entity("MicrosApi.Models.Category", b =>
-                {
-                    b.HasOne("MicrosApi.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
+                    b.ToTable("user", (string)null);
                 });
 
             modelBuilder.Entity("MicrosApi.Models.Transaction", b =>
                 {
                     b.HasOne("MicrosApi.Models.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_transaction_category_category_id");
 
                     b.HasOne("MicrosApi.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_transaction_user_user_id");
 
                     b.Navigation("Category");
 

@@ -1,27 +1,25 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
 
 namespace MicrosApi.Models;
 
 public class Transaction
 {
-    [Column("id")]
     public int Id { get; set; }
 
-    [Column("date")]
     public DateTime Date { get; set; }
 
-    [Column("is_income")]
-    public bool IsIncome { get; set; } 
-    
-    [Column("amount")]
+    public bool IsIncome { get; set; }
+
     public int Amount { get; set; }
 
-    [Column("category_id")]
-    public Category? Category { get; set; }
+    //[JsonIgnore] 
+    public Category Category { get; set; }
 
-    [Column("comment")]
     public string? Comment { get; set; }
 
-    [Column("user_id")]
-    public User? User { get; set; }
+
+    // [JsonIgnore] 
+    public User User { get; set; }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Configuration;
+using Microsoft.EntityFrameworkCore;
 using MicrosApi.Models;
 
 namespace MicrosApi.Context
@@ -9,6 +10,7 @@ namespace MicrosApi.Context
         {
         }
 
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<User>()
@@ -16,8 +18,11 @@ namespace MicrosApi.Context
                 .IsUnique();
         }
 
-        public virtual DbSet<Category> categories { get; set; }
-        public virtual DbSet<Transaction> transactions { get; set; }
-        public virtual DbSet<User> users { get; set; }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            => optionsBuilder.UseNpgsql().UseSnakeCaseNamingConvention();
+
+        public virtual DbSet<Category> category { get; set; }
+        public virtual DbSet<Transaction> transaction { get; set; }
+        public virtual DbSet<User> user { get; set; }
     }
 }
