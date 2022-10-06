@@ -1,21 +1,22 @@
 import {useEffect, useState} from "react";
 import {toast, ToastContainer} from "react-toastify";
+import {useParams} from "react-router-dom";
+import {renderIntoDocument} from "react-dom/test-utils";
 
 const {REACT_APP_API_ENDPOINT} = process.env;
 
 
-export default function AddTransaction() {
+export default function EditTransaction() {
 
 
     const user = JSON.parse(localStorage.getItem("user"));
-
+    const {id} = useParams()
 
     const [amount, setAmount] = useState()
     const [date, setDate] = useState()
     const [categoryName, setCategoryName] = useState("")
     const [isIncome, setIncome] = useState(false)
     const [comment, setComment] = useState("")
-
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
@@ -47,7 +48,7 @@ export default function AddTransaction() {
         console.log(message)
         console.log(status)
         if (status === 200) {
-            toast.success("Successfully created!", {
+            toast.success("Successfully edited!", {
                 position: toast.POSITION.TOP_RIGHT
             });
 
@@ -63,6 +64,7 @@ export default function AddTransaction() {
 
     };
 
+    //todo default values with fetch
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -72,13 +74,11 @@ export default function AddTransaction() {
         console.log(categoryName)
         console.log(comment)
 
-
-        const url = `${REACT_APP_API_ENDPOINT}/Transactions`;
+        const url = `${REACT_APP_API_ENDPOINT}/Transactions/${id}`;
         const token = btoa(`${user.username}:${user.password}`);
-        console.log(token);
 
         const requestOptions = {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
@@ -92,9 +92,7 @@ export default function AddTransaction() {
                     isIncome: isIncome,
                     comment: comment
                 })
-            
         };
-        console.log(requestOptions)
         try {
             fetch(url, requestOptions)
                 .then(response => {
@@ -128,7 +126,6 @@ export default function AddTransaction() {
     };
 
     return (
-
         <div className="form-v7">
             <div className="page-content">
                 <div className="form-v7-content">
@@ -155,7 +152,7 @@ export default function AddTransaction() {
                                     name="categoryName"
                                     defaultValue={categoryName}
                                     onChange={handleCategoryName}>
-                                <option >...Choose</option>
+                                <option>...Choose</option>
                                 {categories.map((category, index) =>
                                     <option key={index} value={category.name}>{category.name}</option>
                                 )}

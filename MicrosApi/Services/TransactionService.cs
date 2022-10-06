@@ -128,7 +128,7 @@ public class TransactionService : ITransactionService
 
         if (category.IsIncome != transactionDto.IsIncome)
         {
-            throw new CustomException("Category's for income(or expense)!");
+            throw new CustomException("Category is only for income(or expense)!");
         }
 
 

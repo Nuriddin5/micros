@@ -12,6 +12,7 @@ import AddCategory from "./components/Category/AddCategory";
 import EditCategory from "./components/Category/EditCategory";
 import AddTransaction from "./components/Transaction/AddTransaction";
 import DeleteTransaction from "./components/Transaction/DeleteTransaction";
+import EditTransaction from "./components/Transaction/EditTransaction";
 
 export default class App extends Component {
     static displayName = App.name;
@@ -28,21 +29,26 @@ export default class App extends Component {
                 <Route path={"/logout"} element={<Logout/>}/>
                 <Route path={"/login"} element={<Login/>}/>
                 <Route path={"/register"} element={<Register/>}/>
-                <Route path={"/categories"} element={<Layout children={ <Categories/>}/>}/>
-                <Route path={"/addCategory"} element={<Layout children={ <AddCategory/>}/>}/>
-                <Route path={"/addTransaction"} element={<Layout children={ <AddTransaction/>}/>}/>
-                
+                <Route path={"/categories"} element={<Layout children={<Categories/>}/>}/>
+                <Route path={"/addCategory"} element={<Layout children={<AddCategory/>}/>}/>
+                <Route path={"/addTransaction"} element={<Layout children={<AddTransaction/>}/>}/>
+
                 <Route path={"categories/delete"}>
                     <Route path=":id" element={<DeleteCategory/>}/>
                 </Route>
                 <Route path={"transactions/delete"}>
                     <Route path=":id" element={<DeleteTransaction/>}/>
                 </Route>
+
                 <Route path={"categories/edit"}>
-                    <Route path=":id" element={<Layout children={ <EditCategory/>}/>}/>
+                    <Route path=":id" element={<Layout children={<EditCategory/>}/>}/>
                 </Route>
-                
-                
+
+                <Route path={"transactions/edit"}>
+                    <Route path=":id" element={<Layout children={<EditTransaction/>}/>}/>
+                </Route>
+
+
             </Routes>
 
 
