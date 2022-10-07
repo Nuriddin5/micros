@@ -25,9 +25,9 @@ public class TransactionService : ITransactionService
         {
             var user = UserChecking(username);
 
-            _context.transaction.Find(1);
-            transactions = new List<Transaction>(_context.transaction.Where(transaction => transaction.Category != null)
-                .ToImmutableList());
+           
+           transactions = _context.transactions.Include("Category").Where(transaction => transaction.User.Id == user.Id)
+               .ToList();
         }
         catch (System.Exception e)
         {
@@ -58,7 +58,7 @@ public class TransactionService : ITransactionService
             throw new CustomException("Transaction amount can be real!");
         }
 
-        var category = _context.category.FirstOrDefault(category =>
+        var category = _context.categories.FirstOrDefault(category =>
             category.Name!.Equals(transactionDto.CategoryName) && category.UserId == user.Id);
 
         if (category == null)
@@ -81,7 +81,7 @@ public class TransactionService : ITransactionService
             User = user,
             Comment = transactionDto.Comment
         };
-        _context.transaction.Add(transaction);
+        _context.transactions.Add(transaction);
         _context.SaveChanges();
 
         return transaction;
@@ -93,7 +93,7 @@ public class TransactionService : ITransactionService
 
         TransactionValidChecking(transactionId, user, out var transaction);
 
-        _context.transaction.Remove(transaction!);
+        _context.transactions.Remove(transaction!);
         _context.SaveChanges();
     }
 
@@ -118,7 +118,7 @@ public class TransactionService : ITransactionService
             throw new CustomException("Transaction amount can be real!");
         }
 
-        var category = _context.category.FirstOrDefault(category =>
+        var category = _context.categories.FirstOrDefault(category =>
             category.Name!.Equals(transactionDto.CategoryName) && category.UserId == user.Id);
 
         if (category == null)
@@ -155,7 +155,7 @@ public class TransactionService : ITransactionService
 
     private void TransactionValidChecking(int transactionId, User? user, out Transaction? transaction)
     {
-        transaction = _context.transaction.Find(transactionId);
+        transaction = _context.transactions.Find(transactionId);
         if (transaction == null || transaction.User!.Id != user!.Id)
         {
             throw new CustomException("Problem with account");
@@ -164,7 +164,7 @@ public class TransactionService : ITransactionService
 
     private User UserChecking(string username)
     {
-        var user = _context.user.FirstOrDefault(user => username.Equals(user.UserName));
+        var user = _context.users.FirstOrDefault(user => username.Equals(user.UserName));
         if (user == null)
         {
             throw new CustomException("Uncaught error");

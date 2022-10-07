@@ -68,7 +68,7 @@ export default function Home() {
                         <td>{value.amount}</td>
                         <td>{value.isIncome.toString()}</td>
                         <td>{value.date.toString()}</td>
-                        <td>{value.category}</td>
+                        <td>{value.category.name}</td>
                         <td>{value.comment}</td>
                         <td className={"w-25"}>
                             <a href={"/transactions/edit/" + value.id}>

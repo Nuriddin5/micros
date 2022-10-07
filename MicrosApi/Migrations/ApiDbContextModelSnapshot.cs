@@ -44,9 +44,9 @@ namespace MicrosApi.Migrations
                         .HasColumnName("user_id");
 
                     b.HasKey("Id")
-                        .HasName("pk_category");
+                        .HasName("pk_categories");
 
-                    b.ToTable("category", (string)null);
+                    b.ToTable("categories", (string)null);
                 });
 
             modelBuilder.Entity("MicrosApi.Models.Transaction", b =>
@@ -71,7 +71,7 @@ namespace MicrosApi.Migrations
                         .HasColumnName("comment");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("date");
 
                     b.Property<bool>("IsIncome")
@@ -83,15 +83,15 @@ namespace MicrosApi.Migrations
                         .HasColumnName("user_id");
 
                     b.HasKey("Id")
-                        .HasName("pk_transaction");
+                        .HasName("pk_transactions");
 
                     b.HasIndex("CategoryId")
-                        .HasDatabaseName("ix_transaction_category_id");
+                        .HasDatabaseName("ix_transactions_category_id");
 
                     b.HasIndex("UserId")
-                        .HasDatabaseName("ix_transaction_user_id");
+                        .HasDatabaseName("ix_transactions_user_id");
 
-                    b.ToTable("transaction", (string)null);
+                    b.ToTable("transactions", (string)null);
                 });
 
             modelBuilder.Entity("MicrosApi.Models.User", b =>
@@ -116,13 +116,13 @@ namespace MicrosApi.Migrations
                         .HasColumnName("user_name");
 
                     b.HasKey("Id")
-                        .HasName("pk_user");
+                        .HasName("pk_users");
 
                     b.HasIndex("UserName")
                         .IsUnique()
-                        .HasDatabaseName("ix_user_user_name");
+                        .HasDatabaseName("ix_users_user_name");
 
-                    b.ToTable("user", (string)null);
+                    b.ToTable("users", (string)null);
                 });
 
             modelBuilder.Entity("MicrosApi.Models.Transaction", b =>
@@ -132,14 +132,14 @@ namespace MicrosApi.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_transaction_category_category_id");
+                        .HasConstraintName("fk_transactions_categories_category_id");
 
                     b.HasOne("MicrosApi.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_transaction_user_user_id");
+                        .HasConstraintName("fk_transactions_users_user_id");
 
                     b.Navigation("Category");
 

@@ -21,8 +21,8 @@ namespace MicrosApi.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseNpgsql().UseSnakeCaseNamingConvention();
 
-        public virtual DbSet<Category> category { get; set; }
-        public virtual DbSet<Transaction> transaction { get; set; }
-        public virtual DbSet<User> user { get; set; }
+        public DbSet<Category> categories { get; set; }
+        public DbSet<Transaction> transactions { get; set; }
+        public DbSet<User> users { get; set; }
     }
 }
