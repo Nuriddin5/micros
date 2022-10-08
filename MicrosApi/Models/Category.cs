@@ -14,5 +14,5 @@ public class Category
 
 
     //  [JsonIgnore] 
-    public int UserId { get; set; }
+    public User User { get; set; }
 }

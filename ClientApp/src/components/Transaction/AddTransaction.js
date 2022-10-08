@@ -44,8 +44,6 @@ export default function AddTransaction() {
 
 
     const showToastMessage = (message, status) => {
-        console.log(message)
-        console.log(status)
         if (status === 200) {
             toast.success("Successfully created!", {
                 position: toast.POSITION.TOP_RIGHT
@@ -66,16 +64,10 @@ export default function AddTransaction() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(isIncome)
-        console.log(amount)
-        console.log(date)
-        console.log(categoryName)
-        console.log(comment)
 
 
         const url = `${REACT_APP_API_ENDPOINT}/Transactions`;
         const token = btoa(`${user.username}:${user.password}`);
-        console.log(token);
 
         const requestOptions = {
             method: 'POST',
@@ -120,7 +112,6 @@ export default function AddTransaction() {
         setCategoryName(event.target.value)
     };
     const handleDate = (event) => {
-        console.log(event.target.value)
         setDate(event.target.value)
     };
     const handleComment = (event) => {
@@ -146,8 +137,7 @@ export default function AddTransaction() {
 
                         <input required type="datetime-local" id="meeting-time"
                                name="meeting-time" defaultValue={date}
-                               onChange={handleDate}
-                        />
+                               onChange={handleDate}/>
 
                         <div className="input-group form-row mt-3 mb-3">
                             <label htmlFor="inputGroupSelect02">CATEGORY</label>
@@ -159,8 +149,6 @@ export default function AddTransaction() {
                                 {categories.map((category, index) =>
                                     <option key={index} value={category.name}>{category.name}</option>
                                 )}
-
-
                             </select>
                         </div>
 

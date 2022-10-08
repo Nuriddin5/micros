@@ -1,7 +1,6 @@
-import { useState} from "react";
+import {useState} from "react";
 import {toast, ToastContainer} from "react-toastify";
 import {useParams} from "react-router-dom";
-import {renderIntoDocument} from "react-dom/test-utils";
 
 const {REACT_APP_API_ENDPOINT} = process.env;
 

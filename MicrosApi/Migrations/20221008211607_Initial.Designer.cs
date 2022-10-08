@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MicrosApi.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20221007003247_Initial")]
+    [Migration("20221008211607_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,6 +47,9 @@ namespace MicrosApi.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_categories");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_categories_user_id");
 
                     b.ToTable("categories", (string)null);
                 });
@@ -96,6 +99,32 @@ namespace MicrosApi.Migrations
                     b.ToTable("transactions", (string)null);
                 });
 
+            modelBuilder.Entity("MicrosApi.Models.Type", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("integer")
+                        .HasColumnName("category_id");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id")
+                        .HasName("pk_types");
+
+                    b.HasIndex("CategoryId")
+                        .HasDatabaseName("ix_types_category_id");
+
+                    b.ToTable("types", (string)null);
+                });
+
             modelBuilder.Entity("MicrosApi.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -127,6 +156,18 @@ namespace MicrosApi.Migrations
                     b.ToTable("users", (string)null);
                 });
 
+            modelBuilder.Entity("MicrosApi.Models.Category", b =>
+                {
+                    b.HasOne("MicrosApi.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_categories_users_user_id");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("MicrosApi.Models.Transaction", b =>
                 {
                     b.HasOne("MicrosApi.Models.Category", "Category")
@@ -146,6 +187,16 @@ namespace MicrosApi.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MicrosApi.Models.Type", b =>
+                {
+                    b.HasOne("MicrosApi.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .HasConstraintName("fk_types_categories_category_id");
+
+                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }

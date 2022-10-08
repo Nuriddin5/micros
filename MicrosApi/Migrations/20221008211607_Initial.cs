@@ -11,21 +11,6 @@ namespace MicrosApi.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "categories",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "text", nullable: true),
-                    is_income = table.Column<bool>(type: "boolean", nullable: false),
-                    user_id = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_categories", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "users",
                 columns: table => new
                 {
@@ -38,6 +23,27 @@ namespace MicrosApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_users", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "categories",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "text", nullable: true),
+                    is_income = table.Column<bool>(type: "boolean", nullable: false),
+                    user_id = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_categories", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_categories_users_user_id",
+                        column: x => x.user_id,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -70,6 +76,30 @@ namespace MicrosApi.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "types",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "text", nullable: true),
+                    category_id = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_types", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_types_categories_category_id",
+                        column: x => x.category_id,
+                        principalTable: "categories",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "ix_categories_user_id",
+                table: "categories",
+                column: "user_id");
+
             migrationBuilder.CreateIndex(
                 name: "ix_transactions_category_id",
                 table: "transactions",
@@ -79,6 +109,11 @@ namespace MicrosApi.Migrations
                 name: "ix_transactions_user_id",
                 table: "transactions",
                 column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_types_category_id",
+                table: "types",
+                column: "category_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_users_user_name",
@@ -91,6 +126,9 @@ namespace MicrosApi.Migrations
         {
             migrationBuilder.DropTable(
                 name: "transactions");
+
+            migrationBuilder.DropTable(
+                name: "types");
 
             migrationBuilder.DropTable(
                 name: "categories");

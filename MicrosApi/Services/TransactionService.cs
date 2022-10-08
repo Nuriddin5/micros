@@ -57,7 +57,7 @@ public class TransactionService : ITransactionService
         }
 
         var category = _context.categories.FirstOrDefault(category =>
-            category.Name!.Equals(transactionDto.CategoryName) && category.UserId == user.Id);
+            category.Name!.Equals(transactionDto.CategoryName) && category.User.Id == user.Id);
 
         if (category == null)
         {
@@ -117,7 +117,7 @@ public class TransactionService : ITransactionService
         }
 
         var category = _context.categories.FirstOrDefault(category =>
-            category.Name!.Equals(transactionDto.CategoryName) && category.UserId == user.Id);
+            category.Name!.Equals(transactionDto.CategoryName) && category.User.Id == user.Id);
 
         if (category == null)
         {

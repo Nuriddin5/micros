@@ -45,8 +45,6 @@ export default function EditTransaction() {
 
 
     const showToastMessage = (message, status) => {
-        console.log(message)
-        console.log(status)
         if (status === 200) {
             toast.success("Successfully edited!", {
                 position: toast.POSITION.TOP_RIGHT
@@ -68,11 +66,6 @@ export default function EditTransaction() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(isIncome)
-        console.log(amount)
-        console.log(date)
-        console.log(categoryName)
-        console.log(comment)
 
         const url = `${REACT_APP_API_ENDPOINT}/Transactions/${id}`;
         const token = btoa(`${user.username}:${user.password}`);
@@ -118,12 +111,12 @@ export default function EditTransaction() {
         setCategoryName(event.target.value)
     };
     const handleDate = (event) => {
-        console.log(event.target.value)
         setDate(event.target.value)
     };
     const handleComment = (event) => {
         setComment(event.target.value)
     };
+
 
     return (
         <div className="form-v7">

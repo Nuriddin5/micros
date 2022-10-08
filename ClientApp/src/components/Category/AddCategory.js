@@ -14,8 +14,6 @@ export default function AddCategory() {
 
 
     const showToastMessage = (message, status) => {
-        console.log(message)
-        console.log(status)
         if (status === 200) {
             toast.success("Successfully created!", {
                 position: toast.POSITION.TOP_RIGHT
@@ -37,12 +35,9 @@ export default function AddCategory() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        console.log(categoryName);
-        console.log(isIncome);
 
         const url = `${REACT_APP_API_ENDPOINT}/Categories`;
         const token = btoa(`${user.username}:${user.password}`);
-        console.log(token);
 
 
         const requestOptions = {
@@ -76,7 +71,6 @@ export default function AddCategory() {
         setCategoryName(event.target.value);
     };
     const handleChange2 = (event) => {
-        console.log(event.target.value);
         setIncome(event.target.value === "true")
     };
 
