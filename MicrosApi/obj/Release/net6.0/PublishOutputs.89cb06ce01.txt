@@ -4,6 +4,7 @@ C:\Users\zuxra\Desktop\Micros\ForDeploying\micros\MicrosApi\obj\Release\net6.0\P
 C:\Users\zuxra\Desktop\Micros\ForDeploying\micros\MicrosApi\obj\Release\net6.0\PubTmp\Out\MicrosApi.dll
 C:\Users\zuxra\Desktop\Micros\ForDeploying\micros\MicrosApi\obj\Release\net6.0\PubTmp\Out\MicrosApi.runtimeconfig.json
 C:\Users\zuxra\Desktop\Micros\ForDeploying\micros\MicrosApi\obj\Release\net6.0\PubTmp\Out\MicrosApi.pdb
+C:\Users\zuxra\Desktop\Micros\ForDeploying\micros\MicrosApi\obj\Release\net6.0\PubTmp\Out\EFCore.NamingConventions.dll
 C:\Users\zuxra\Desktop\Micros\ForDeploying\micros\MicrosApi\obj\Release\net6.0\PubTmp\Out\Humanizer.dll
 C:\Users\zuxra\Desktop\Micros\ForDeploying\micros\MicrosApi\obj\Release\net6.0\PubTmp\Out\MessagePack.dll
 C:\Users\zuxra\Desktop\Micros\ForDeploying\micros\MicrosApi\obj\Release\net6.0\PubTmp\Out\MessagePack.Annotations.dll

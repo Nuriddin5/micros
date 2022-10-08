@@ -170,9 +170,9 @@ export default function AddTransaction() {
                                     name="isIncome"
                                     defaultValue={isIncome}
                                     onChange={handleIncome}>
-                                <option value="true">True
+                                <option value="true">Income
                                 </option>
-                                <option value="false">False
+                                <option value="false">Expense
                                 </option>
                             </select>
                         </div>

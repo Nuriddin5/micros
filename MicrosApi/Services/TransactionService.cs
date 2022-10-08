@@ -1,10 +1,9 @@
-﻿using System.Collections.Immutable;
-using System.Globalization;
+﻿using System.Globalization;
+using MicrosApi.Context;
 using MicrosApi.Dtos;
 using MicrosApi.Exception;
-using Microsoft.EntityFrameworkCore;
-using MicrosApi.Context;
 using MicrosApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MicrosApi.Services;
 
@@ -24,7 +23,6 @@ public class TransactionService : ITransactionService
         try
         {
             var user = UserChecking(username);
-
            
            transactions = _context.transactions.Include("Category").Where(transaction => transaction.User.Id == user.Id)
                .ToList();

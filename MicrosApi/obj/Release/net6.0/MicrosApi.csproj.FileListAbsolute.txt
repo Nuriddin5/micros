@@ -246,3 +246,4 @@ C:\Users\zuxra\Desktop\Micros\ForDeploying\micros\MicrosApi\obj\Release\net6.0\r
 C:\Users\zuxra\Desktop\Micros\ForDeploying\micros\MicrosApi\obj\Release\net6.0\MicrosApi.pdb
 C:\Users\zuxra\Desktop\Micros\ForDeploying\micros\MicrosApi\obj\Release\net6.0\MicrosApi.genruntimeconfig.cache
 C:\Users\zuxra\Desktop\Micros\ForDeploying\micros\MicrosApi\obj\Release\net6.0\ref\MicrosApi.dll
+C:\Users\zuxra\Desktop\Micros\ForDeploying\micros\MicrosApi\bin\Release\net6.0\EFCore.NamingConventions.dll

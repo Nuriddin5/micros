@@ -106,9 +106,9 @@ export default function EditCategory() {
 
                                     defaultValue={isIncome.toString()}
                                     onChange={handleChange2}>
-                                <option value="true">True
+                                <option value="true">Income
                                 </option>
-                                <option value="false">False
+                                <option value="false">Expense
                                 </option>
                             </select>
                         </div>

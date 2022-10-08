@@ -53,7 +53,7 @@ export default function Categories() {
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Category name</th>
-                        <th scope="col">IsIncome</th>
+                        <th scope="col">Type</th>
                         <th scope="col"></th>
                     </tr>
                     </thead>
@@ -62,7 +62,7 @@ export default function Categories() {
                     {categories.map((value, index) => <tr key={index}>
                         <th scope="row">{index + 1}</th>
                         <td>{value.name}</td>
-                        <td>{value.isIncome.toString()}</td>
+                        <td>{value.isIncome ? 'Income' : 'Expense'}</td>
                         <td className={"w-25"}>
                             <a href={"/categories/edit/" + value.id}>
                             <button className={"btn btn-primary mx-3"}>Edit</button>

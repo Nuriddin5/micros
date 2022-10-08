@@ -54,7 +54,7 @@ export default function Home() {
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Amount</th>
-                        <th scope="col">IsIncome</th>
+                        <th scope="col">Type</th>
                         <th scope="col">Date</th>
                         <th scope="col">Category</th>
                         <th scope="col">Comment</th>
@@ -65,9 +65,9 @@ export default function Home() {
 
                     {transactions.map((value, index) => <tr key={index}>
                         <th scope="row">{index + 1}</th>
-                        <td>{value.amount}</td>
-                        <td>{value.isIncome.toString()}</td>
-                        <td>{value.date.toString()}</td>
+                        <td>{value.amount} $</td>
+                        <td>{value.isIncome ? 'Income' : 'Expense'} </td>
+                        <td>{value.date.toString().substring(0,10)} {value.date.toString().substring(11)}</td>
                         <td>{value.category.name}</td>
                         <td>{value.comment}</td>
                         <td className={"w-25"}>

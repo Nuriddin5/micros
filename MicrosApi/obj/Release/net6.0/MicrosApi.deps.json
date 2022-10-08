@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v6.0": {
       "MicrosApi/1.0.0": {
         "dependencies": {
+          "EFCore.NamingConventions": "6.0.0",
           "Microsoft.EntityFrameworkCore": "6.0.9",
           "Microsoft.EntityFrameworkCore.Design": "6.0.9",
           "Microsoft.EntityFrameworkCore.Tools": "6.0.9",
@@ -17,6 +18,19 @@
         },
         "runtime": {
           "MicrosApi.dll": {}
+        }
+      },
+      "EFCore.NamingConventions/6.0.0": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "6.0.9",
+          "Microsoft.EntityFrameworkCore.Relational": "6.0.9",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/EFCore.NamingConventions.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.0.0"
+          }
         }
       },
       "Humanizer.Core/2.8.26": {
@@ -2171,6 +2185,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "EFCore.NamingConventions/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ij0Z59hA3hattuY+FFmfGhJwLmSw8uz/+01lMRnD5YOYJM7hN7JJUZ92U3rZL6nTJQL5xOf7Rt39zdeNSloImw==",
+      "path": "efcore.namingconventions/6.0.0",
+      "hashPath": "efcore.namingconventions.6.0.0.nupkg.sha512"
     },
     "Humanizer.Core/2.8.26": {
       "type": "package",

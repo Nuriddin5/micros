@@ -97,16 +97,13 @@ export default function AddCategory() {
                         </div>
 
                         <div className="input-group form-row mb-3">
-                            <label htmlFor="inputGroupSelect02">IS INCOME</label>
+                            <label htmlFor="inputGroupSelect02">TYPE</label>
                             <select className="form-select mt-3 w-100" id="inputGroupSelect02"
 
                                     defaultValue={isIncome.toString()}
                                     onChange={handleChange2}>
-                                {/*<option selected>Choose...</option>*/}
-                                <option value="true">True
-                                </option>
-                                <option value="false">False
-                                </option>
+                                <option value="true">Income</option>
+                                <option value="false">Expense</option>
                             </select>
                         </div>
 

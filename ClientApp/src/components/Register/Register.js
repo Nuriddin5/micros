@@ -16,7 +16,7 @@ export default function Register() {
         password: "",
         prePassword: ""
     });
-    
+
     const handleChange = (event) => {
         setUserInfo({...userInfo, [event.target.name]: event.target.value});
     };
@@ -111,8 +111,7 @@ export default function Register() {
                         <input type="submit" name="register" className="register" value="Register"/>
                         <p>Or<a href="/login">Sign in</a></p>
                     </div>
-                    
-                    <div>{userInfo.fullname}</div>
+
                 </form>
             </div>
         </div>

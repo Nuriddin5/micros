@@ -35,6 +35,7 @@ namespace MicrosApi
                 {
                     policy.AllowAnyOrigin()
                         .AllowAnyMethod()
+                        .AllowAnyHeader()
                         .AllowAnyHeader();
                 });
             });
