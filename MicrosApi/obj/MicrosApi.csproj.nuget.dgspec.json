@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\zuxra\\Desktop\\Micros\\ForDeploying\\micros\\MicrosApi\\MicrosApi.csproj": {}
+    "C:\\Users\\Quvonchbek\\Desktop\\RiderProjects\\micros\\MicrosApi\\MicrosApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\zuxra\\Desktop\\Micros\\ForDeploying\\micros\\MicrosApi\\MicrosApi.csproj": {
+    "C:\\Users\\Quvonchbek\\Desktop\\RiderProjects\\micros\\MicrosApi\\MicrosApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\zuxra\\Desktop\\Micros\\ForDeploying\\micros\\MicrosApi\\MicrosApi.csproj",
+        "projectUniqueName": "C:\\Users\\Quvonchbek\\Desktop\\RiderProjects\\micros\\MicrosApi\\MicrosApi.csproj",
         "projectName": "MicrosApi",
-        "projectPath": "C:\\Users\\zuxra\\Desktop\\Micros\\ForDeploying\\micros\\MicrosApi\\MicrosApi.csproj",
-        "packagesPath": "C:\\Users\\zuxra\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\zuxra\\Desktop\\Micros\\ForDeploying\\micros\\MicrosApi\\obj\\",
+        "projectPath": "C:\\Users\\Quvonchbek\\Desktop\\RiderProjects\\micros\\MicrosApi\\MicrosApi.csproj",
+        "packagesPath": "C:\\Users\\Quvonchbek\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Quvonchbek\\Desktop\\RiderProjects\\micros\\MicrosApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\zuxra\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Quvonchbek\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

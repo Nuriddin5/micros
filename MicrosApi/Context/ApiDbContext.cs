@@ -17,6 +17,9 @@ namespace MicrosApi.Context
             builder.Entity<User>()
                 .HasIndex(u => u.UserName)
                 .IsUnique();
+            builder.Entity<Type>()
+                .HasIndex(u => u.Name)
+                .IsUnique();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

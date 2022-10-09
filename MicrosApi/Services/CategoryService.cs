@@ -1,8 +1,8 @@
-﻿using MicrosApi.Dtos;
+﻿using MicrosApi.Context;
+using MicrosApi.Dtos;
 using MicrosApi.Exception;
-using Microsoft.EntityFrameworkCore;
-using MicrosApi.Context;
 using MicrosApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MicrosApi.Services;
 
@@ -23,7 +23,7 @@ public class CategoryService : ICategoryService
         {
             var user = UserChecking(username);
 
-            categories = _context.categories.Where(category => category.User.Id == user.Id)
+            categories = _context.categories.Where(category => category.User!.Id == user.Id)
                 .ToList();
         }
         catch (System.Exception e)
@@ -39,7 +39,7 @@ public class CategoryService : ICategoryService
     {
         var user = UserChecking(username);
         var isCategoryExistsForUser =
-            _context.categories.Any(c => c.Name!.Equals(categoryDto.Name) && c.User.Id == user.Id);
+            _context.categories.Any(c => c.Name!.Equals(categoryDto.Name) && c.User!.Id == user.Id);
         if (isCategoryExistsForUser)
         {
             throw new CustomException("You already add this category name!");
@@ -50,10 +50,22 @@ public class CategoryService : ICategoryService
             throw new CustomException("Category name can't be empty!");
         }
 
+        if (string.IsNullOrEmpty(categoryDto.TypeName))
+        {
+            throw new CustomException("Type can't be empty!");
+        }
+
+        var type = _context.types.First(type => type.Name!.Equals(categoryDto.TypeName));
+
+        if (type == null)
+        {
+            throw new CustomException("Type can't be empty!");
+        }
+
         Category category = new()
         {
             Name = categoryDto.Name,
-            IsIncome = categoryDto.IsIncome,
+            Type = type,
             User = user
         };
         _context.categories.Add(category);
@@ -79,13 +91,25 @@ public class CategoryService : ICategoryService
 
         CategoryValidChecking(categoryId, user, out var category);
 
-        if (category!.Name!.Equals(categoryDto.Name) && category.IsIncome == categoryDto.IsIncome)
+        if (string.IsNullOrEmpty(categoryDto.TypeName))
+        {
+            throw new CustomException("Type can't be empty!");
+        }
+
+        var type = _context.types.First(type => type.Name!.Equals(categoryDto.TypeName));
+
+        if (type == null)
+        {
+            throw new CustomException("Type can't be empty!");
+        }
+
+        if (category!.Name!.Equals(categoryDto.Name) && type.Name!.Equals(categoryDto.TypeName))
         {
             throw new CustomException("You should edit or back!");
         }
 
         category.Name = categoryDto.Name;
-        category.IsIncome = categoryDto.IsIncome;
+        category.Type = type;
 
         _context.Entry(category).State = EntityState.Modified;
 
@@ -96,7 +120,7 @@ public class CategoryService : ICategoryService
     private void CategoryValidChecking(int categoryId, User? user, out Category? category)
     {
         category = _context.categories.Find(categoryId);
-        if (category == null || category.User.Id != user!.Id)
+        if (category == null || category.User!.Id != user!.Id)
         {
             throw new CustomException("Problem with account");
         }

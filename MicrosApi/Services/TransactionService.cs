@@ -23,9 +23,10 @@ public class TransactionService : ITransactionService
         try
         {
             var user = UserChecking(username);
-           
-           transactions = _context.transactions.Include("Category").Where(transaction => transaction.User.Id == user.Id)
-               .ToList();
+
+            transactions = _context.transactions.Include("Category")
+                .Where(transaction => transaction.User!.Id == user.Id)
+                .ToList();
         }
         catch (System.Exception e)
         {
@@ -57,16 +58,23 @@ public class TransactionService : ITransactionService
         }
 
         var category = _context.categories.FirstOrDefault(category =>
-            category.Name!.Equals(transactionDto.CategoryName) && category.User.Id == user.Id);
+            category.Name!.Equals(transactionDto.CategoryName) && category.User!.Id == user.Id);
 
         if (category == null)
         {
             throw new CustomException("Transaction category is wrong!");
         }
 
-        if (category.IsIncome != transactionDto.IsIncome)
+        if (string.IsNullOrEmpty(transactionDto.TypeName))
         {
-            throw new CustomException("Category is only for income(or expense)!");
+            throw new CustomException("Type can't be empty!");
+        }
+
+        var type = _context.types.First(type => type.Name!.Equals(transactionDto.TypeName));
+
+        if (type == null)
+        {
+            throw new CustomException("Type can't be empty!");
         }
 
 
@@ -75,7 +83,6 @@ public class TransactionService : ITransactionService
             Amount = transactionDto.Amount,
             Date = Convert.ToDateTime(transactionDto.Date),
             Category = category,
-            IsIncome = transactionDto.IsIncome,
             User = user,
             Comment = transactionDto.Comment
         };
@@ -117,23 +124,30 @@ public class TransactionService : ITransactionService
         }
 
         var category = _context.categories.FirstOrDefault(category =>
-            category.Name!.Equals(transactionDto.CategoryName) && category.User.Id == user.Id);
+            category.Name!.Equals(transactionDto.CategoryName) && category.User!.Id == user.Id);
 
         if (category == null)
         {
             throw new CustomException("Transaction category is wrong!");
         }
 
-        if (category.IsIncome != transactionDto.IsIncome)
+        if (string.IsNullOrEmpty(transactionDto.TypeName))
         {
-            throw new CustomException("Category is only for income(or expense)!");
+            throw new CustomException("Type can't be empty!");
+        }
+
+        var type = _context.types.First(type => type.Name!.Equals(transactionDto.TypeName));
+
+        if (type == null)
+        {
+            throw new CustomException("Type can't be empty!");
         }
 
 
         TransactionValidChecking(transactionId, user, out var transaction);
 
-        if (transaction!.Date.ToString().Equals(transactionDto.Date)
-            && transaction.IsIncome == transactionDto.IsIncome
+        if (transaction!.Date.ToString(CultureInfo.InvariantCulture).Equals(transactionDto.Date)
+            && type.Name!.Equals(transactionDto.TypeName)
             && transaction.Amount == transactionDto.Amount
             && transaction.Comment!.Equals(transactionDto.Comment))
         {
@@ -141,7 +155,7 @@ public class TransactionService : ITransactionService
         }
 
         transaction.Date = Convert.ToDateTime(transactionDto.Date);
-        transaction.IsIncome = transactionDto.IsIncome;
+        transaction.Category!.Type = type;
         transaction.Amount = transactionDto.Amount;
         transaction.Comment = transactionDto.Comment;
 

@@ -1,0 +1,2 @@
+C:\Users\Quvonchbek\Desktop\RiderProjects\micros\ClientApp\obj\Debug\clientapp.esproj.SuggestedBindingRedirects.cache
+C:\Users\Quvonchbek\Desktop\RiderProjects\micros\ClientApp\obj\Debug\clientapp.esproj.CoreCompileInputs.cache

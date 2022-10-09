@@ -31,20 +31,23 @@ namespace MicrosApi.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("IsIncome")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_income");
-
                     b.Property<string>("Name")
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("TypeId")
+                        .HasColumnType("integer")
+                        .HasColumnName("type_id");
+
+                    b.Property<int?>("UserId")
                         .HasColumnType("integer")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id")
                         .HasName("pk_categories");
+
+                    b.HasIndex("TypeId")
+                        .HasDatabaseName("ix_categories_type_id");
 
                     b.HasIndex("UserId")
                         .HasDatabaseName("ix_categories_user_id");
@@ -65,7 +68,7 @@ namespace MicrosApi.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("amount");
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("integer")
                         .HasColumnName("category_id");
 
@@ -77,11 +80,7 @@ namespace MicrosApi.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("date");
 
-                    b.Property<bool>("IsIncome")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_income");
-
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("integer")
                         .HasColumnName("user_id");
 
@@ -106,10 +105,6 @@ namespace MicrosApi.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("integer")
-                        .HasColumnName("category_id");
-
                     b.Property<string>("Name")
                         .HasColumnType("text")
                         .HasColumnName("name");
@@ -117,8 +112,9 @@ namespace MicrosApi.Migrations
                     b.HasKey("Id")
                         .HasName("pk_types");
 
-                    b.HasIndex("CategoryId")
-                        .HasDatabaseName("ix_types_category_id");
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasDatabaseName("ix_types_name");
 
                     b.ToTable("types", (string)null);
                 });
@@ -156,12 +152,17 @@ namespace MicrosApi.Migrations
 
             modelBuilder.Entity("MicrosApi.Models.Category", b =>
                 {
+                    b.HasOne("MicrosApi.Models.Type", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId")
+                        .HasConstraintName("fk_categories_types_type_id");
+
                     b.HasOne("MicrosApi.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("fk_categories_users_user_id");
+
+                    b.Navigation("Type");
 
                     b.Navigation("User");
                 });
@@ -171,30 +172,16 @@ namespace MicrosApi.Migrations
                     b.HasOne("MicrosApi.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("fk_transactions_categories_category_id");
 
                     b.HasOne("MicrosApi.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("fk_transactions_users_user_id");
 
                     b.Navigation("Category");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("MicrosApi.Models.Type", b =>
-                {
-                    b.HasOne("MicrosApi.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .HasConstraintName("fk_types_categories_category_id");
-
-                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }

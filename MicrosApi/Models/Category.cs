@@ -1,7 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore;
-
 namespace MicrosApi.Models;
 
 public class Category
@@ -10,9 +6,7 @@ public class Category
 
     public string? Name { get; set; }
 
-    public bool IsIncome { get; set; }
+    public Type? Type { get; set; }
 
-
-    //  [JsonIgnore] 
-    public User User { get; set; }
+    public User? User { get; set; }
 }
