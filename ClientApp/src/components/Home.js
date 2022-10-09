@@ -105,14 +105,14 @@ export default function Home() {
 
             <div>
                 <div className={"mt-3 d-flex justify-content-around px-5 w-50 m-auto"}>
-                  <div>
-                      <span className={"mx-1"}>From </span>
-                      <input required type="date" id="meeting-time-1"
-                             name="meeting-time"
-                          // defaultValue={date}
-                          // onChange={handleDate}
-                      />
-                  </div>
+                    <div>
+                        <span className={"mx-1"}>From </span>
+                        <input required type="date" id="meeting-time-1"
+                               name="meeting-time"
+                            // defaultValue={date}
+                            // onChange={handleDate}
+                        />
+                    </div>
                     <div>
                         <span className={"mx-1"}>To </span>
                         <input className={""} required type="date" id="meeting-time-2"
@@ -176,7 +176,7 @@ export default function Home() {
                     {transactions.map((value, index) => <tr key={index}>
                         <th scope="row">{index + 1}</th>
                         <td>{value.amount} $</td>
-                        <td>{value.isIncome ? 'Income' : 'Expense'} </td>
+                        <td>{value.category.type.name}</td>
                         <td>{value.date.toString().substring(0, 10)} {value.date.toString().substring(11)}</td>
                         <td>{value.category.name}</td>
                         <td>{value.comment}</td>

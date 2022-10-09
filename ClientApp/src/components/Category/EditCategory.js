@@ -15,7 +15,6 @@ export default function EditCategory() {
     const [typeName, setTypeName] = useState()
     const [types, setTypes] = useState([]);
 
-
     const showToastMessage = (message, status) => {
         console.log(message)
         console.log(status)
@@ -40,11 +39,8 @@ export default function EditCategory() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
         const url = `${REACT_APP_API_ENDPOINT}/Categories/${id}`;
         const token = btoa(`${user.username}:${user.password}`);
-        console.log(token);
-
 
         const requestOptions = {
             method: 'PUT',
@@ -68,8 +64,6 @@ export default function EditCategory() {
         } catch (err) {
             console.log(err);
         }
-
-
     };
 
 
@@ -99,26 +93,23 @@ export default function EditCategory() {
         fetchData();
     }, []);
 
-
     return (
-
         <div className="form-v7">
             <div className="page-content">
                 <div className="form-v7-content">
                     <form onSubmit={handleSubmit} className="form-detail" action="#" method="post" id="myform">
                         <ToastContainer/>
                         <div className="form-row">
-                            <label htmlFor="fullname">CATEGORY NAME</label>
-                            <input type="text" name="name" id="your_email" className="input-text"
+                            <label htmlFor="edit_category_name">CATEGORY NAME</label>
+                            <input type="text" id="edit_category_name" className="input-text"
                                    defaultValue={categoryName}
                                    onChange={handleCategoryName} required
                             />
                         </div>
 
                         <div className="input-group form-row mb-3">
-                            <label htmlFor="inputGroupSelect02">IS INCOME</label>
-                            <select className="form-select mt-3 w-100" id="inputGroupSelect02"
-
+                            <label htmlFor="edit_category_typeName">IS INCOME</label>
+                            <select className="form-select mt-3 w-100" id="edit_category_typeName"
                                     defaultValue={typeName}
                                     onChange={handleType}>
                                 <option>...Choose</option>

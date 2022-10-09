@@ -5,15 +5,13 @@ const {REACT_APP_API_ENDPOINT} = process.env;
 
 export default function Categories() {
 
-    const [categories, setCategories] = useState([])
-
     const user = JSON.parse(localStorage.getItem("user"));
 
+    const [categories, setCategories] = useState([])
 
     useEffect(() => {
         const url = `${REACT_APP_API_ENDPOINT}/Categories/User`;
         const token = btoa(`${user.username}:${user.password}`);
-
 
         const fetchData = () => {
             const headers = {'Authorization': `basic ${token}`}
@@ -31,7 +29,6 @@ export default function Categories() {
         fetchData();
     }, []);
 
-
     return (
 
         <div className={"container"}>
@@ -42,12 +39,8 @@ export default function Categories() {
                 </a>
             </div>
 
-            <div className={"d-flex justify-content-center"}>
-
-            </div>
-
-            <div className={"d-flex justify-content-center mt-5 "}>
-                <table className="table table-striped w-75">
+            <div className={"d-flex justify-content-center mt-5 w-75 m-auto"}>
+                <table className="table table-striped">
                     <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -69,10 +62,8 @@ export default function Categories() {
                             <a href={"/categories/delete/" + value.id}>
                                 <button className={"btn btn-danger"}>Delete</button>
                             </a>
-
                         </td>
                     </tr>)}
-
                     </tbody>
                 </table>
             </div>

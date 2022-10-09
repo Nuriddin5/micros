@@ -13,8 +13,9 @@ export default function AddTransaction() {
     const [amount, setAmount] = useState()
     const [date, setDate] = useState()
     const [categoryName, setCategoryName] = useState("")
-    const [isIncome, setIncome] = useState(false)
     const [comment, setComment] = useState("")
+    const [typeName, setTypeName] = useState()
+    const [types, setTypes] = useState([]);
 
     const [categories, setCategories] = useState([]);
 
@@ -38,6 +39,24 @@ export default function AddTransaction() {
             }
 
 
+        };
+        fetchData();
+    }, []);
+    useEffect(() => {
+        const url = `${REACT_APP_API_ENDPOINT}/Types`;
+        const token = btoa(`${user.username}:${user.password}`);
+
+        const fetchData = () => {
+            const headers = {'Authorization': `basic ${token}`}
+            try {
+                fetch(url, {headers})
+                    .then(response => response.json())
+                    .then(data => {
+                        setTypes(data);
+                    });
+            } catch (err) {
+                console.log(err);
+            }
         };
         fetchData();
     }, []);
@@ -81,10 +100,10 @@ export default function AddTransaction() {
                     amount: amount,
                     date: date,
                     categoryName: categoryName,
-                    isIncome: isIncome,
+                    typeName: typeName,
                     comment: comment
                 })
-            
+
         };
         console.log(requestOptions)
         try {
@@ -105,8 +124,8 @@ export default function AddTransaction() {
     const handleAmount = (event) => {
         setAmount(parseInt(event.target.value))
     };
-    const handleIncome = (event) => {
-        setIncome(event.target.value === "true")
+    const handleType = (event) => {
+        setTypeName(event.target.value)
     };
     const handleCategoryName = (event) => {
         setCategoryName(event.target.value)
@@ -145,7 +164,7 @@ export default function AddTransaction() {
                                     name="categoryName"
                                     defaultValue={categoryName}
                                     onChange={handleCategoryName}>
-                                <option >...Choose</option>
+                                <option>...Choose</option>
                                 {categories.map((category, index) =>
                                     <option key={index} value={category.name}>{category.name}</option>
                                 )}
@@ -156,12 +175,12 @@ export default function AddTransaction() {
                             <label htmlFor="inputGroupSelect02">IS INCOME</label>
                             <select className="form-select mt-3 w-100" id="is_income_transaction"
                                     name="isIncome"
-                                    defaultValue={isIncome}
-                                    onChange={handleIncome}>
-                                <option value="true">Income
-                                </option>
-                                <option value="false">Expense
-                                </option>
+                                    defaultValue={typeName}
+                                    onChange={handleType}>
+                                <option>...Choose</option>
+                                {types.map((t, index) =>
+                                    <option key={index} value={t.name}>{t.name}</option>
+                                )}
                             </select>
                         </div>
 

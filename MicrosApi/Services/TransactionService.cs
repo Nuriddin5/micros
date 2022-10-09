@@ -24,7 +24,7 @@ public class TransactionService : ITransactionService
         {
             var user = UserChecking(username);
 
-            transactions = _context.transactions.Include("Category")
+            transactions = _context.transactions.Include(t => t.Category!.Type).Include(t => t.Category)
                 .Where(transaction => transaction.User!.Id == user.Id)
                 .ToList();
         }
