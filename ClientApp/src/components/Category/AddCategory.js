@@ -74,7 +74,6 @@ export default function AddCategory() {
                 fetch(url, {headers})
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data)
                         setTypes(data);
                     });
             } catch (err) {
@@ -93,16 +92,16 @@ export default function AddCategory() {
                         <ToastContainer/>
 
                         <div className="form-row">
-                            <label htmlFor="category_name">CATEGORY NAME</label>
-                            <input type="text" name="name" id="category_name" className="input-text"
+                            <label htmlFor="add_category_name">CATEGORY NAME</label>
+                            <input type="text" name="name" id="add_category_name" className="input-text"
                                    defaultValue={categoryName}
                                    onChange={handleCategoryName} required
                             />
                         </div>
 
                         <div className="input-group form-row mb-3">
-                            <label htmlFor="type_name">TYPE</label>
-                            <select className="form-select mt-3 w-100" id="type_name"
+                            <label htmlFor="type_name_add">TYPE</label>
+                            <select className="form-select mt-3 w-100" id="type_name_add"
                                     defaultValue={typeName}
                                     onChange={handleType}>
                                 <option>...Choose</option>

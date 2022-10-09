@@ -21,13 +21,12 @@ export default function Categories() {
                 fetch(url, {headers})
                     .then(response => response.json())
                     .then(data => {
+                        console.log(data);
                         setCategories(data);
                     });
             } catch (err) {
                 console.log(err);
             }
-
-
         };
         fetchData();
     }, []);
@@ -62,7 +61,7 @@ export default function Categories() {
                     {categories.map((value, index) => <tr key={index}>
                         <th scope="row">{index + 1}</th>
                         <td>{value.name}</td>
-                        <td>{value.isIncome ? 'Income' : 'Expense'}</td>
+                        <td>{value.type.name}</td>
                         <td className={"w-25"}>
                             <a href={"/categories/edit/" + value.id}>
                                 <button className={"btn btn-primary mx-3"}>Edit</button>

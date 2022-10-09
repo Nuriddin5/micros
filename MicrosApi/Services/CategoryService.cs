@@ -23,7 +23,7 @@ public class CategoryService : ICategoryService
         {
             var user = UserChecking(username);
 
-            categories = _context.categories.Where(category => category.User!.Id == user.Id)
+            categories = _context.categories.Include("Type").Where(category => category.User!.Id == user.Id)
                 .ToList();
         }
         catch (System.Exception e)
@@ -103,7 +103,7 @@ public class CategoryService : ICategoryService
             throw new CustomException("Type can't be empty!");
         }
 
-        if (category!.Name!.Equals(categoryDto.Name) && type.Name!.Equals(categoryDto.TypeName))
+        if (category!.Name!.Equals(categoryDto.Name) && category.Type!.Name!.Equals(categoryDto.TypeName))
         {
             throw new CustomException("You should edit or back!");
         }
@@ -119,7 +119,7 @@ public class CategoryService : ICategoryService
 
     private void CategoryValidChecking(int categoryId, User? user, out Category? category)
     {
-        category = _context.categories.Find(categoryId);
+        category = _context.categories.Include("Type").First(category=> category.Id == categoryId);
         if (category == null || category.User!.Id != user!.Id)
         {
             throw new CustomException("Problem with account");

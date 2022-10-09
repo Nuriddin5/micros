@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {toast, ToastContainer} from "react-toastify";
 import {useParams} from "react-router-dom";
 
@@ -12,7 +12,8 @@ export default function EditCategory() {
     const {id} = useParams()
 
     const [categoryName, setCategoryName] = useState("")
-    const [isIncome, setIncome] = useState(false)
+    const [typeName, setTypeName] = useState()
+    const [types, setTypes] = useState([]);
 
 
     const showToastMessage = (message, status) => {
@@ -36,12 +37,9 @@ export default function EditCategory() {
     };
 
     //todo default values with fetch
-    
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-
-        console.log(categoryName);
-        console.log(isIncome);
 
         const url = `${REACT_APP_API_ENDPOINT}/Categories/${id}`;
         const token = btoa(`${user.username}:${user.password}`);
@@ -57,7 +55,7 @@ export default function EditCategory() {
             },
             body: JSON.stringify({
                 name: categoryName,
-                isIncome: isIncome
+                typeName: typeName
             })
         };
         try {
@@ -75,13 +73,31 @@ export default function EditCategory() {
     };
 
 
-    const handleChange = (event) => {
+    const handleCategoryName = (event) => {
         setCategoryName(event.target.value);
     };
-    const handleChange2 = (event) => {
-        console.log(event.target.value);
-        setIncome(event.target.value === "true")
+    const handleType = (event) => {
+        setTypeName(event.target.value)
     };
+
+    useEffect(() => {
+        const url = `${REACT_APP_API_ENDPOINT}/Types`;
+        const token = btoa(`${user.username}:${user.password}`);
+
+        const fetchData = () => {
+            const headers = {'Authorization': `basic ${token}`}
+            try {
+                fetch(url, {headers})
+                    .then(response => response.json())
+                    .then(data => {
+                        setTypes(data);
+                    });
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchData();
+    }, []);
 
 
     return (
@@ -95,7 +111,7 @@ export default function EditCategory() {
                             <label htmlFor="fullname">CATEGORY NAME</label>
                             <input type="text" name="name" id="your_email" className="input-text"
                                    defaultValue={categoryName}
-                                   onChange={handleChange} required
+                                   onChange={handleCategoryName} required
                             />
                         </div>
 
@@ -103,17 +119,17 @@ export default function EditCategory() {
                             <label htmlFor="inputGroupSelect02">IS INCOME</label>
                             <select className="form-select mt-3 w-100" id="inputGroupSelect02"
 
-                                    defaultValue={isIncome.toString()}
-                                    onChange={handleChange2}>
-                                <option value="true">Income
-                                </option>
-                                <option value="false">Expense
-                                </option>
+                                    defaultValue={typeName}
+                                    onChange={handleType}>
+                                <option>...Choose</option>
+                                {types.map((t, index) =>
+                                    <option key={index} value={t.name}>{t.name}</option>
+                                )}
                             </select>
                         </div>
 
                         <div className="form-row-last" style={{justifyContent: "center", display: "flex"}}>
-                            <input type="submit" name="register" className="register" value="Add"/>
+                            <input type="submit" name="register" className="register" value="Edit"/>
                         </div>
                     </form>
                 </div>
