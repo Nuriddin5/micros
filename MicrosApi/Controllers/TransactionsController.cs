@@ -4,6 +4,7 @@ using MicrosApi.Models;
 using MicrosApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MicrosApi.Controllers
 {
@@ -39,6 +40,28 @@ namespace MicrosApi.Controllers
             }
 
             return Ok(transactions);
+        }
+
+        // GET: api/Transactions/5
+        [Authorize]
+        [HttpGet("{id}")]
+        public ActionResult<Transaction> GetTransactionsById(int id)
+        {
+            Transaction transaction;
+            try
+            {
+                transaction = _context.transactions.Include(t => t.Category).First(t => t.Id == id);
+                if (transaction == null)
+                {
+                    return NotFound();
+                }
+            }
+            catch (System.Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+            return Ok(transaction);
         }
 
         // PUT: api/Transactions/5

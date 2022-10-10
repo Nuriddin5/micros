@@ -121,9 +121,10 @@ public class TransactionService : ITransactionService
 
         TransactionValidChecking(transactionId, user, out var transaction);
 
-        if (transaction!.Date.ToString(CultureInfo.InvariantCulture).Equals(transactionDto.Date)
+        if (transaction!.Date.CompareTo(Convert.ToDateTime(transactionDto.Date)) == 0
             && transaction.Amount == transactionDto.Amount
-            && transaction.Comment!.Equals(transactionDto.Comment))
+            && transaction.Comment!.Equals(transactionDto.Comment)
+            && transactionDto.CategoryName.Equals(transaction.Category.Name))
         {
             throw new CustomException("You should edit or back!");
         }
@@ -141,7 +142,7 @@ public class TransactionService : ITransactionService
 
     private void TransactionValidChecking(int transactionId, User? user, out Transaction? transaction)
     {
-        transaction = _context.transactions.Find(transactionId);
+        transaction = _context.transactions.Include(t => t.Category).First(t=>t.Id == transactionId);
         if (transaction == null || transaction.User!.Id != user!.Id)
         {
             throw new CustomException("Problem with account");

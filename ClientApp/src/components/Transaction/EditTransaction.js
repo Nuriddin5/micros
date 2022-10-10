@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {toast, ToastContainer} from "react-toastify";
 import {useParams} from "react-router-dom";
-import {renderIntoDocument} from "react-dom/test-utils";
+
 
 const {REACT_APP_API_ENDPOINT} = process.env;
 
@@ -12,18 +12,42 @@ export default function EditTransaction() {
     const user = JSON.parse(localStorage.getItem("user"));
     const {id} = useParams()
 
+
     const [amount, setAmount] = useState()
-    const [date, setDate] = useState()
+    const [date, setDate] = useState("")
     const [categoryName, setCategoryName] = useState("")
-    const [isIncome, setIncome] = useState(false)
     const [comment, setComment] = useState("")
     const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        const url = `${REACT_APP_API_ENDPOINT}/Transactions/${id}`;
+        const token = btoa(`${user.username}:${user.password}`);
+
+        const fetchData = () => {
+            const headers = {'Authorization': `basic ${token}`}
+            try {
+                fetch(url, {headers})
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data)
+                        setAmount(data.amount)
+                        setComment(data.comment)
+                        setDate(data.date)
+                        setCategoryName(data.category.name)
+                        console.log(categoryName)
+                    });
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchData();
+    }, []);
+
 
     useEffect(() => {
         const url = `${REACT_APP_API_ENDPOINT}/Categories/User`;
         const token = btoa(`${user.username}:${user.password}`);
         console.log(token);
-
 
         const fetchData = () => {
             const headers = {'Authorization': `basic ${token}`}
@@ -37,8 +61,6 @@ export default function EditTransaction() {
             } catch (err) {
                 console.log(err);
             }
-
-
         };
         fetchData();
     }, []);
@@ -62,7 +84,6 @@ export default function EditTransaction() {
 
     };
 
-    //todo default values with fetch
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -82,7 +103,6 @@ export default function EditTransaction() {
                     amount: amount,
                     date: date,
                     categoryName: categoryName,
-                    isIncome: isIncome,
                     comment: comment
                 })
         };
@@ -96,16 +116,11 @@ export default function EditTransaction() {
         } catch (err) {
             console.log(err);
         }
-
-
     };
 
 
     const handleAmount = (event) => {
         setAmount(parseInt(event.target.value))
-    };
-    const handleIncome = (event) => {
-        setIncome(event.target.value === "true")
     };
     const handleCategoryName = (event) => {
         setCategoryName(event.target.value)
@@ -119,6 +134,7 @@ export default function EditTransaction() {
 
 
     return (
+
         <div className="form-v7">
             <div className="page-content">
                 <div className="form-v7-content">
@@ -145,8 +161,9 @@ export default function EditTransaction() {
                                     name="categoryName"
                                     defaultValue={categoryName}
                                     onChange={handleCategoryName}>
-                                <option>...Choose</option>
+                                <option defaultValue={categoryName}>{categoryName}</option>
                                 {categories.map((category, index) =>
+                                    category.name !== categoryName &&
                                     <option key={index} value={category.name}>{category.name}</option>
                                 )}
 
@@ -154,18 +171,6 @@ export default function EditTransaction() {
                             </select>
                         </div>
 
-                        <div className="input-group form-row mb-3">
-                            <label htmlFor="inputGroupSelect02">IS INCOME</label>
-                            <select className="form-select mt-3 w-100" id="is_income_transaction"
-                                    name="isIncome"
-                                    defaultValue={isIncome}
-                                    onChange={handleIncome}>
-                                <option value="true">Income
-                                </option>
-                                <option value="false">Expense
-                                </option>
-                            </select>
-                        </div>
 
                         <div className="form-row">
                             <label htmlFor="comment">COMMENT</label>
@@ -175,7 +180,7 @@ export default function EditTransaction() {
                             />
                         </div>
                         <div className="form-row-last" style={{justifyContent: "center", display: "flex"}}>
-                            <input type="submit" name="register" className="register" value="Add"/>
+                            <input type="submit" name="register" className="register" value="Edit"/>
                         </div>
                     </form>
                 </div>
