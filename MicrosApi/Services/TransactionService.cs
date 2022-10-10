@@ -65,19 +65,6 @@ public class TransactionService : ITransactionService
             throw new CustomException("Transaction category is wrong!");
         }
 
-        if (string.IsNullOrEmpty(transactionDto.TypeName))
-        {
-            throw new CustomException("Type can't be empty!");
-        }
-
-        var type = _context.types.First(type => type.Name!.Equals(transactionDto.TypeName));
-
-        if (type == null)
-        {
-            throw new CustomException("Type can't be empty!");
-        }
-
-
         Transaction transaction = new()
         {
             Amount = transactionDto.Amount,
@@ -131,23 +118,10 @@ public class TransactionService : ITransactionService
             throw new CustomException("Transaction category is wrong!");
         }
 
-        if (string.IsNullOrEmpty(transactionDto.TypeName))
-        {
-            throw new CustomException("Type can't be empty!");
-        }
-
-        var type = _context.types.First(type => type.Name!.Equals(transactionDto.TypeName));
-
-        if (type == null)
-        {
-            throw new CustomException("Type can't be empty!");
-        }
-
 
         TransactionValidChecking(transactionId, user, out var transaction);
 
         if (transaction!.Date.ToString(CultureInfo.InvariantCulture).Equals(transactionDto.Date)
-            && type.Name!.Equals(transactionDto.TypeName)
             && transaction.Amount == transactionDto.Amount
             && transaction.Comment!.Equals(transactionDto.Comment))
         {
@@ -155,7 +129,7 @@ public class TransactionService : ITransactionService
         }
 
         transaction.Date = Convert.ToDateTime(transactionDto.Date);
-        transaction.Category!.Type = type;
+        transaction.Category = category;
         transaction.Amount = transactionDto.Amount;
         transaction.Comment = transactionDto.Comment;
 

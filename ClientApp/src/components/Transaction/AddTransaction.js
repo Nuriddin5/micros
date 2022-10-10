@@ -14,8 +14,6 @@ export default function AddTransaction() {
     const [date, setDate] = useState()
     const [categoryName, setCategoryName] = useState("")
     const [comment, setComment] = useState("")
-    const [typeName, setTypeName] = useState()
-    const [types, setTypes] = useState([]);
 
     const [categories, setCategories] = useState([]);
 
@@ -39,24 +37,6 @@ export default function AddTransaction() {
             }
 
 
-        };
-        fetchData();
-    }, []);
-    useEffect(() => {
-        const url = `${REACT_APP_API_ENDPOINT}/Types`;
-        const token = btoa(`${user.username}:${user.password}`);
-
-        const fetchData = () => {
-            const headers = {'Authorization': `basic ${token}`}
-            try {
-                fetch(url, {headers})
-                    .then(response => response.json())
-                    .then(data => {
-                        setTypes(data);
-                    });
-            } catch (err) {
-                console.log(err);
-            }
         };
         fetchData();
     }, []);
@@ -100,7 +80,6 @@ export default function AddTransaction() {
                     amount: amount,
                     date: date,
                     categoryName: categoryName,
-                    typeName: typeName,
                     comment: comment
                 })
 
@@ -120,12 +99,8 @@ export default function AddTransaction() {
 
     };
 
-
     const handleAmount = (event) => {
         setAmount(parseInt(event.target.value))
-    };
-    const handleType = (event) => {
-        setTypeName(event.target.value)
     };
     const handleCategoryName = (event) => {
         setCategoryName(event.target.value)
@@ -167,19 +142,6 @@ export default function AddTransaction() {
                                 <option>...Choose</option>
                                 {categories.map((category, index) =>
                                     <option key={index} value={category.name}>{category.name}</option>
-                                )}
-                            </select>
-                        </div>
-
-                        <div className="input-group form-row mb-3">
-                            <label htmlFor="inputGroupSelect02">IS INCOME</label>
-                            <select className="form-select mt-3 w-100" id="is_income_transaction"
-                                    name="isIncome"
-                                    defaultValue={typeName}
-                                    onChange={handleType}>
-                                <option>...Choose</option>
-                                {types.map((t, index) =>
-                                    <option key={index} value={t.name}>{t.name}</option>
                                 )}
                             </select>
                         </div>
