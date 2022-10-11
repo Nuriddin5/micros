@@ -23,7 +23,10 @@ export default function Home() {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
-    // console.log(searchParams.get('type'))
+    let typeSearchParam = searchParams.get('type');
+    console.log(typeSearchParam)
+    let categorySearchParam = searchParams.get('category');
+    console.log(categorySearchParam)
 
 
     const user = JSON.parse(localStorage.getItem("user"));
@@ -50,7 +53,7 @@ export default function Home() {
 
 
     useEffect(() => {
-        const url = `${REACT_APP_API_ENDPOINT}/Transactions`;
+        const url = `${REACT_APP_API_ENDPOINT}/Transactions`
         const token = btoa(`${user.username}:${user.password}`);
 
         const fetchData = () => {
@@ -63,16 +66,38 @@ export default function Home() {
                 fetch(url, {headers})
                     .then(response => response.json())
                     .then(data => {
-                        setTransactions(data);
+                        return data;
                     });
             } catch (err) {
                 console.log(err);
             }
-
-
         };
         fetchData();
     }, []);
+
+
+    const fetchData = () => {
+        let url;
+        if (typeSearchParam !== null) url = `${REACT_APP_API_ENDPOINT}/Transactions?type=${typeSearchParam}`;
+        if (categorySearchParam !== null) url = `${REACT_APP_API_ENDPOINT}/Transactions?category=${categorySearchParam}`;
+        if (typeSearchParam === null && categorySearchParam === null) url = `${REACT_APP_API_ENDPOINT}/Transactions`
+        const token = btoa(`${user.username}:${user.password}`);
+        const headers = {
+            'Authorization': `basic ${token}`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+        try {
+            fetch(url, {headers})
+                .then(response => response.json())
+                .then(data => {
+                    setTransactions(data);
+                });
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
 
     useEffect(() => {
         const url = `${REACT_APP_API_ENDPOINT}/Categories/`;
@@ -100,47 +125,28 @@ export default function Home() {
 
         let name = event.target.name;
         let value = event.target.value;
-        console.log(name)
-        console.log(value)
 
         if (name === 'typeName') {
             setSearchInfo({...searchInfo, [name]: value});
             setTypeSelected(value !== 'All')
             value !== 'All' ?
                 navigate(`/search?type=${value}`) :
-                navigate(`/`)
+                navigate(`/`,);
+
 
         } else if (name === 'categoryName') {
             setSearchInfo({...searchInfo, [name]: value});
             setCategorySelected(value !== 'All')
             value !== 'All' ?
                 navigate(`/search?category=${value}`) :
-                navigate(`/`)
-            ;
-
+                navigate(`/`);
         }
-        // else {
-        //     navigate(`/`)
-        // }
+
     };
 
-    console.log(searchInfo)
-
-    function route() {
-        const typeName = searchInfo.typeName;
-        const categoryName = searchInfo.categoryName;
-
-
-        if (typeName !== 'All') {
-            navigate(`/search?type=${typeName}`)
-        } else if (categoryName !== 'All') {
-            navigate(`/search?category=${categoryName}`);
-        } else {
-            navigate(`/`)
-        }
-    }
-
-    // route()
+    useEffect(() => {
+        fetchData()
+    }, [transactions])
 
 
     return (
