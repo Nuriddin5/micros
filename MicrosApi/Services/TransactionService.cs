@@ -17,21 +17,38 @@ public class TransactionService : ITransactionService
     }
 
 
-    public List<Transaction> GetTransactionsByUser(string username,string? type,string? category)
+    public List<Transaction> GetTransactionsByUser(string username, string? type, string? category, string? startDate,
+        string? endDate)
     {
         List<Transaction> transactions;
+
+        // DateTime dateFrom = Convert.ToDateTime(startDate);
+        //
+        // DateTime dateTo = Convert.ToDateTime(endDate);
+
+        DateTime dateTo = DateTime.TryParse(startDate, out dateTo) ? dateTo : DateTime.MinValue;
+        DateTime dateFrom = DateTime.TryParse(startDate, out dateFrom) ? dateFrom : DateTime.MinValue;
+
+
         try
         {
             var user = UserChecking(username);
-            //todo in both not null
             transactions = _context.transactions.Include(t => t.Category!.Type).Include(t => t.Category)
                 .Where(transaction =>
-                    (string.IsNullOrEmpty(type) && string.IsNullOrEmpty(category)) ?
-                        transaction.User!.Id == user.Id :
-                            !string.IsNullOrEmpty(type) ?
-                            transaction.User!.Id == user.Id && transaction.Category!.Type!.Name!.Equals(type) :
-                            transaction.User!.Id == user.Id && transaction.Category!.Name!.Equals(category)
-                    ).ToList();
+                    (string.IsNullOrEmpty(type) && string.IsNullOrEmpty(category))
+                        ? transaction.User!.Id == user.Id
+                        : !string.IsNullOrEmpty(type)
+                            ? transaction.User!.Id == user.Id && transaction.Category!.Type!.Name!.Equals(type)
+                            : transaction.User!.Id == user.Id && transaction.Category!.Name!.Equals(category)
+                ).Where(transaction =>
+                    (dateFrom.CompareTo(DateTime.MinValue) != 0 && dateTo.CompareTo(DateTime.MinValue) != 0)
+                        ? transaction.Date.CompareTo(dateFrom) > 0 && transaction.Date.CompareTo(dateTo) < 0
+                        : dateFrom.CompareTo(DateTime.MinValue) != 0
+                            ? transaction.Date.CompareTo(dateFrom) > 0
+                            : dateTo.CompareTo(DateTime.MinValue) != 0
+                                ? transaction.Date.CompareTo(dateTo) < 0
+                                : transaction.User!.Id == user.Id
+                ).ToList();
         }
         catch (System.Exception e)
         {
@@ -147,7 +164,7 @@ public class TransactionService : ITransactionService
 
     private void TransactionValidChecking(int transactionId, User? user, out Transaction? transaction)
     {
-        transaction = _context.transactions.Include(t => t.Category).First(t=>t.Id == transactionId);
+        transaction = _context.transactions.Include(t => t.Category).First(t => t.Id == transactionId);
         if (transaction == null || transaction.User!.Id != user!.Id)
         {
             throw new CustomException("Problem with account");

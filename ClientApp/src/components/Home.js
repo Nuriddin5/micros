@@ -7,26 +7,23 @@ export default function Home() {
 
 
     const [transactions, setTransactions] = useState([])
-
-
     const [searchInfo, setSearchInfo] = useState({
         categoryName: "All",
         typeName: "All",
     });
-
     const [categories, setCategories] = useState([]);
     const [types, setTypes] = useState([]);
     const [isTypeSelected, setTypeSelected] = useState(false)
     const [isCategorySelected, setCategorySelected] = useState(false)
+    const [startDate, setStartDate] = useState("")
+    const [endDate, setEndDate] = useState("")
 
 
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
     let typeSearchParam = searchParams.get('type');
-    console.log(typeSearchParam)
     let categorySearchParam = searchParams.get('category');
-    console.log(categorySearchParam)
 
 
     const user = JSON.parse(localStorage.getItem("user"));
@@ -149,6 +146,14 @@ export default function Home() {
     }, [transactions])
 
 
+    function handleStartDate(event) {
+        setStartDate(event.target.value)
+    }
+
+    function handleEndDate(event) {
+        setStartDate(event.target.value)
+    }
+
     return (
 
         <div className={"container"}>
@@ -167,16 +172,16 @@ export default function Home() {
                         <span className={"mx-1"}>From </span>
                         <input required type="date" id="meeting-time-1"
                                name="meeting-time"
-                            // defaultValue={date}
-                            // onChange={handleDate}
+                               defaultValue={startDate}
+                               onChange={handleStartDate}
                         />
                     </div>
                     <div>
                         <span className={"mx-1"}>To </span>
                         <input className={""} required type="date" id="meeting-time-2"
                                name="meeting-time"
-                            // defaultValue={date}
-                            // onChange={handleDate}
+                               defaultValue={endDate}
+                               onChange={handleEndDate}
                         />
                     </div>
                 </div>
