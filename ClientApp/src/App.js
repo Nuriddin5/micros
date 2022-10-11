@@ -26,6 +26,10 @@ export default class App extends Component {
                 <Route path={"/"} element={
                     localStorage.getItem('user') ?
                         <Layout children={<Home/>}/> : <Login/>}/>
+                <Route path={"/search"} element={
+                    localStorage.getItem('user') ?
+                        <Layout children={<Home/>}/> : <Login/>}/>
+                
                 <Route path={"/logout"} element={<Logout/>}/>
                 <Route path={"/login"} element={<Login/>}/>
                 <Route path={"/register"} element={<Register/>}/>

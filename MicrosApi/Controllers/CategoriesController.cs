@@ -23,9 +23,9 @@ namespace MicrosApi.Controllers
         }
 
 
-        // GET: api/Categories/user
+        // GET: api/Categories
         [Authorize]
-        [HttpGet("User")]
+        [HttpGet]
         public ActionResult<List<Category>> GetCategoriesByUser()
         {
             List<Category> categories;

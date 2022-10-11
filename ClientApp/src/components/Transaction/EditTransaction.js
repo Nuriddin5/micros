@@ -45,7 +45,7 @@ export default function EditTransaction() {
 
 
     useEffect(() => {
-        const url = `${REACT_APP_API_ENDPOINT}/Categories/User`;
+        const url = `${REACT_APP_API_ENDPOINT}/Categories`;
         const token = btoa(`${user.username}:${user.password}`);
         console.log(token);
 

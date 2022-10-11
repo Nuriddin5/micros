@@ -17,16 +17,21 @@ public class TransactionService : ITransactionService
     }
 
 
-    public List<Transaction> GetTransactionsByUser(string username)
+    public List<Transaction> GetTransactionsByUser(string username,string? type,string? category)
     {
         List<Transaction> transactions;
         try
         {
             var user = UserChecking(username);
-
+            //todo in both not null
             transactions = _context.transactions.Include(t => t.Category!.Type).Include(t => t.Category)
-                .Where(transaction => transaction.User!.Id == user.Id)
-                .ToList();
+                .Where(transaction =>
+                    (string.IsNullOrEmpty(type) && string.IsNullOrEmpty(category)) ?
+                        transaction.User!.Id == user.Id :
+                            !string.IsNullOrEmpty(type) ?
+                            transaction.User!.Id == user.Id && transaction.Category!.Type!.Name!.Equals(type) :
+                            transaction.User!.Id == user.Id && transaction.Category!.Name!.Equals(category)
+                    ).ToList();
         }
         catch (System.Exception e)
         {

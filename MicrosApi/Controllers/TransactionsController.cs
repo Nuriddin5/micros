@@ -23,16 +23,17 @@ namespace MicrosApi.Controllers
         }
 
 
-        // GET: api/Transactions/user
+        // GET: api/Transactions
         [Authorize]
-        [HttpGet("User")]
-        public ActionResult<List<Transaction>> GetTransactionsByUser()
+        [HttpGet]
+        public ActionResult<List<Transaction>> GetTransactionsByUser([FromQuery] string? type,[FromQuery] string? category)
         {
             List<Transaction> transactions;
             try
             {
                 var username = HttpContext.User.Identity?.Name;
-                transactions = _service.GetTransactionsByUser(username);
+                
+                transactions = _service.GetTransactionsByUser(username,type,category);
             }
             catch (System.Exception e)
             {

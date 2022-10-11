@@ -10,7 +10,7 @@ export default function Categories() {
     const [categories, setCategories] = useState([])
 
     useEffect(() => {
-        const url = `${REACT_APP_API_ENDPOINT}/Categories/User`;
+        const url = `${REACT_APP_API_ENDPOINT}/Categories`;
         const token = btoa(`${user.username}:${user.password}`);
 
         const fetchData = () => {

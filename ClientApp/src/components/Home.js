@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import {useNavigate, useSearchParams} from "react-router-dom";
 
 const {REACT_APP_API_ENDPOINT} = process.env;
 
@@ -6,17 +7,51 @@ export default function Home() {
 
 
     const [transactions, setTransactions] = useState([])
-    const [categoryName, setCategoryName] = useState("")
+
+
+    const [searchInfo, setSearchInfo] = useState({
+        categoryName: "All",
+        typeName: "All",
+    });
+
     const [categories, setCategories] = useState([]);
+    const [types, setTypes] = useState([]);
+    const [isTypeSelected, setTypeSelected] = useState(false)
+    const [isCategorySelected, setCategorySelected] = useState(false)
+
+
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+
+    // console.log(searchParams.get('type'))
 
 
     const user = JSON.parse(localStorage.getItem("user"));
 
 
     useEffect(() => {
-        const url = `${REACT_APP_API_ENDPOINT}/Transactions/User`;
+        const url = `${REACT_APP_API_ENDPOINT}/Types`;
         const token = btoa(`${user.username}:${user.password}`);
-        console.log(token);
+
+        const fetchData = () => {
+            const headers = {'Authorization': `basic ${token}`}
+            try {
+                fetch(url, {headers})
+                    .then(response => response.json())
+                    .then(data => {
+                        setTypes(data);
+                    });
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchData();
+    }, []);
+
+
+    useEffect(() => {
+        const url = `${REACT_APP_API_ENDPOINT}/Transactions`;
+        const token = btoa(`${user.username}:${user.password}`);
 
         const fetchData = () => {
             const headers = {
@@ -28,7 +63,6 @@ export default function Home() {
                 fetch(url, {headers})
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data)
                         setTransactions(data);
                     });
             } catch (err) {
@@ -41,9 +75,8 @@ export default function Home() {
     }, []);
 
     useEffect(() => {
-        const url = `${REACT_APP_API_ENDPOINT}/Categories/User`;
+        const url = `${REACT_APP_API_ENDPOINT}/Categories/`;
         const token = btoa(`${user.username}:${user.password}`);
-        console.log(token);
 
 
         const fetchData = () => {
@@ -52,7 +85,6 @@ export default function Home() {
                 fetch(url, {headers})
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data)
                         setCategories(data);
                     });
             } catch (err) {
@@ -64,31 +96,51 @@ export default function Home() {
         fetchData();
     }, []);
 
-    const handleCategoryName = (event) => {
-        setCategoryName(event.target.value)
+    const handleSearchInfo = (event) => {
+
+        let name = event.target.name;
+        let value = event.target.value;
+        console.log(name)
+        console.log(value)
+
+        if (name === 'typeName') {
+            setSearchInfo({...searchInfo, [name]: value});
+            setTypeSelected(value !== 'All')
+            value !== 'All' ?
+                navigate(`/search?type=${value}`) :
+                navigate(`/`)
+
+        } else if (name === 'categoryName') {
+            setSearchInfo({...searchInfo, [name]: value});
+            setCategorySelected(value !== 'All')
+            value !== 'All' ?
+                navigate(`/search?category=${value}`) :
+                navigate(`/`)
+            ;
+
+        }
+        // else {
+        //     navigate(`/`)
+        // }
     };
 
-    const handleIncome = (event) => {
-        setIncome(event.target.value === "true")
-    };
+    console.log(searchInfo)
 
-    const [isIncome, setIncome] = useState()
+    function route() {
+        const typeName = searchInfo.typeName;
+        const categoryName = searchInfo.categoryName;
 
-    // const filteredPersons = transactions.filter(
-    //    
-    //     transaction => {
-    //         return (
-    //             transaction
-    //                 .category.name
-    //                 .toLowerCase()
-    //                 .includes(searchField.toLowerCase()) ||
-    //             transaction
-    //                 .surname
-    //                 .toLowerCase()
-    //                 .includes(searchField.toLowerCase())
-    //         );
-    //     }
-    // );
+
+        if (typeName !== 'All') {
+            navigate(`/search?type=${typeName}`)
+        } else if (categoryName !== 'All') {
+            navigate(`/search?category=${categoryName}`);
+        } else {
+            navigate(`/`)
+        }
+    }
+
+    // route()
 
 
     return (
@@ -129,26 +181,26 @@ export default function Home() {
                         <label htmlFor="inputGroupSelect02">CATEGORY</label>
                         <select required className="form-select mt-3 w-100" id="category_transaction"
                                 name="categoryName"
-                                defaultValue={categoryName}
-                                onChange={handleCategoryName}>
+                                defaultValue={searchInfo.categoryName}
+                                onChange={handleSearchInfo}>
                             <option>All</option>
                             {categories.map((category, index) =>
-                                <option key={index} value={category.name}>{category.name}</option>
+                                <option disabled={isTypeSelected} key={index}
+                                        value={category.name}>{category.name}</option>
                             )}
                         </select>
                     </div>
 
                     <div className="input-group mb-3 mx-1">
-                        <label htmlFor="inputGroupSelect02">IS INCOME</label>
+                        <label htmlFor="inputGroupSelect02">TYPE</label>
                         <select className="form-select mt-3 w-100" id="is_income_transaction"
-                                name="isIncome"
-                                defaultValue={isIncome}
-                                onChange={handleIncome}>
+                                name="typeName"
+                                defaultValue={searchInfo.typeName}
+                                onChange={handleSearchInfo}>
                             <option>All</option>
-                            <option value="true">Income
-                            </option>
-                            <option value="false">Expense
-                            </option>
+                            {types.map((t, index) =>
+                                <option disabled={isCategorySelected} key={index} value={t.name}>{t.name}</option>
+                            )}
                         </select>
                     </div>
                 </div>
