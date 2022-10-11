@@ -15,6 +15,29 @@ export default function EditCategory() {
     const [typeName, setTypeName] = useState()
     const [types, setTypes] = useState([]);
 
+    useEffect(() => {
+        const url = `${REACT_APP_API_ENDPOINT}/Categories/${id}`;
+        const token = btoa(`${user.username}:${user.password}`);
+
+        const fetchData = () => {
+            const headers = {'Authorization': `basic ${token}`}
+            try {
+                fetch(url, {headers})
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data)
+                        setCategoryName(data.name)
+                        setTypeName(data.type.name)
+                        console.log(data.type.name)
+                        console.log(categoryName)
+                    });
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchData();
+    }, []);
+
     const showToastMessage = (message, status) => {
         console.log(message)
         console.log(status)
@@ -34,8 +57,6 @@ export default function EditCategory() {
         }
 
     };
-
-    //todo default values with fetch
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -112,8 +133,9 @@ export default function EditCategory() {
                             <select className="form-select mt-3 w-100" id="edit_category_typeName"
                                     defaultValue={typeName}
                                     onChange={handleType}>
-                                <option>...Choose</option>
+                                <option defaultValue={typeName}>{typeName}</option>
                                 {types.map((t, index) =>
+                                    t.name !== typeName &&
                                     <option key={index} value={t.name}>{t.name}</option>
                                 )}
                             </select>

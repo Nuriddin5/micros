@@ -112,6 +112,8 @@ export default function AddTransaction() {
         setComment(event.target.value)
     };
 
+    //todo adding one time add
+
     return (
 
         <div className="form-v7">

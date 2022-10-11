@@ -40,6 +40,28 @@ namespace MicrosApi.Controllers
             }
 
             return Ok(categories);
+        } 
+        
+        // GET: api/Categories/5
+        [Authorize]
+        [HttpGet("{id}")]
+        public ActionResult<List<Category>> GetCategoriesById(int id)
+        {
+            Category category;
+            try
+            {
+                category = _context.categories.Include(c => c.Type).First(c => c.Id == id);
+                if (category == null)
+                {
+                    return NotFound();
+                }
+            }
+            catch (System.Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+            return Ok(category);
         }
 
         // PUT: api/Categories/5

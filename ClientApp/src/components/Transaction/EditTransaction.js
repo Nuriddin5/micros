@@ -118,7 +118,6 @@ export default function EditTransaction() {
         }
     };
 
-
     const handleAmount = (event) => {
         setAmount(parseInt(event.target.value))
     };
@@ -132,9 +131,7 @@ export default function EditTransaction() {
         setComment(event.target.value)
     };
 
-
     return (
-
         <div className="form-v7">
             <div className="page-content">
                 <div className="form-v7-content">
