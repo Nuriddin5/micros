@@ -11,6 +11,7 @@ export default function Home() {
         categoryName: "All",
         typeName: "All",
     });
+    
     const [categories, setCategories] = useState([]);
     const [types, setTypes] = useState([]);
     const [isTypeSelected, setTypeSelected] = useState(false)
@@ -50,7 +51,11 @@ export default function Home() {
 
 
     useEffect(() => {
-        const url = `${REACT_APP_API_ENDPOINT}/Transactions`
+        let url;
+        if (typeSearchParam !== null) url = `${REACT_APP_API_ENDPOINT}/Transactions?type=${typeSearchParam}`;
+        if (categorySearchParam !== null) url = `${REACT_APP_API_ENDPOINT}/Transactions?category=${categorySearchParam}`;
+        if (typeSearchParam === null && categorySearchParam === null) url = `${REACT_APP_API_ENDPOINT}/Transactions`
+        
         const token = btoa(`${user.username}:${user.password}`);
 
         const fetchData = () => {
@@ -63,37 +68,15 @@ export default function Home() {
                 fetch(url, {headers})
                     .then(response => response.json())
                     .then(data => {
-                        return data;
+                        setTransactions(data);
                     });
             } catch (err) {
                 console.log(err);
             }
         };
         fetchData();
-    }, []);
+    }, [categorySearchParam, typeSearchParam, user.password, user.username]);
 
-
-    const fetchData = () => {
-        let url;
-        if (typeSearchParam !== null) url = `${REACT_APP_API_ENDPOINT}/Transactions?type=${typeSearchParam}`;
-        if (categorySearchParam !== null) url = `${REACT_APP_API_ENDPOINT}/Transactions?category=${categorySearchParam}`;
-        if (typeSearchParam === null && categorySearchParam === null) url = `${REACT_APP_API_ENDPOINT}/Transactions`
-        const token = btoa(`${user.username}:${user.password}`);
-        const headers = {
-            'Authorization': `basic ${token}`,
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }
-        try {
-            fetch(url, {headers})
-                .then(response => response.json())
-                .then(data => {
-                    setTransactions(data);
-                });
-        } catch (err) {
-            console.log(err);
-        }
-    };
 
 
     useEffect(() => {
@@ -141,9 +124,9 @@ export default function Home() {
 
     };
 
-    useEffect(() => {
-        fetchData()
-    }, [transactions])
+    // useEffect(() => {
+    //     fetchData()
+    // }, [transactions])
 
 
     function handleStartDate(event) {
