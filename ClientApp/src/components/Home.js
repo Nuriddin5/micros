@@ -7,17 +7,19 @@ export default function Home() {
 
 
     const [transactions, setTransactions] = useState([])
-    const [searchInfo, setSearchInfo] = useState({
-        categoryName: "All",
-        typeName: "All",
+    const [filterInfo, setFilterInfo] = useState({
+        categoryName: "all",
+        typeName: "all",
+        startDate: '',
+        endDate: '',
+
     });
-    
+
     const [categories, setCategories] = useState([]);
     const [types, setTypes] = useState([]);
     const [isTypeSelected, setTypeSelected] = useState(false)
     const [isCategorySelected, setCategorySelected] = useState(false)
-    const [startDate, setStartDate] = useState("")
-    const [endDate, setEndDate] = useState("")
+    const [url, setUrl] = useState('')
 
 
     const navigate = useNavigate();
@@ -25,6 +27,8 @@ export default function Home() {
 
     let typeSearchParam = searchParams.get('type');
     let categorySearchParam = searchParams.get('category');
+    let startDateSearchParam = searchParams.get('startDate');
+    let endDateSearchParam = searchParams.get('endDate');
 
 
     const user = JSON.parse(localStorage.getItem("user"));
@@ -37,6 +41,7 @@ export default function Home() {
         const fetchData = () => {
             const headers = {'Authorization': `basic ${token}`}
             try {
+
                 fetch(url, {headers})
                     .then(response => response.json())
                     .then(data => {
@@ -47,15 +52,33 @@ export default function Home() {
             }
         };
         fetchData();
-    }, []);
+    }, [user.password, user.username]);
 
 
     useEffect(() => {
-        let url;
-        if (typeSearchParam !== null) url = `${REACT_APP_API_ENDPOINT}/Transactions?type=${typeSearchParam}`;
-        if (categorySearchParam !== null) url = `${REACT_APP_API_ENDPOINT}/Transactions?category=${categorySearchParam}`;
-        if (typeSearchParam === null && categorySearchParam === null) url = `${REACT_APP_API_ENDPOINT}/Transactions`
-        
+        let baseUrl = `${REACT_APP_API_ENDPOINT}/Transactions`;
+        let url = `${REACT_APP_API_ENDPOINT}/Transactions`;
+
+        if (typeSearchParam !== null) {
+            url += `?type=${typeSearchParam}`
+            if (startDateSearchParam !== null) url += `&startDate=${startDateSearchParam}`
+            if (startDateSearchParam !== null) url += `&endDate=${endDateSearchParam}`
+        } else if (categorySearchParam !== null) {
+            url += `?category=${categorySearchParam}`
+            if (startDateSearchParam !== null) url += `&startDate=${startDateSearchParam}`
+            if (startDateSearchParam !== null) url += `&endDate=${endDateSearchParam}`
+        } else {
+            if (startDateSearchParam !== null) url += `?startDate=${startDateSearchParam}`
+            if (baseUrl === url) {
+                if (startDateSearchParam !== null) {
+                    url += `&endDate=${endDateSearchParam}`
+                } else {
+                    url += `?endDate=${endDateSearchParam}`
+                }
+            }
+        }
+
+
         const token = btoa(`${user.username}:${user.password}`);
 
         const fetchData = () => {
@@ -75,8 +98,7 @@ export default function Home() {
             }
         };
         fetchData();
-    }, [categorySearchParam, typeSearchParam, user.password, user.username]);
-
+    }, [categorySearchParam, endDateSearchParam, startDateSearchParam, typeSearchParam, user.password, user.username]);
 
 
     useEffect(() => {
@@ -99,43 +121,58 @@ export default function Home() {
 
         };
         fetchData();
-    }, []);
+    }, [user.password, user.username]);
 
-    const handleSearchInfo = (event) => {
-
+    const handleFilterInfo = (event) => {
         let name = event.target.name;
         let value = event.target.value;
 
-        if (name === 'typeName') {
-            setSearchInfo({...searchInfo, [name]: value});
-            setTypeSelected(value !== 'All')
-            value !== 'All' ?
-                navigate(`/search?type=${value}`) :
-                navigate(`/`,);
+        console.log(name)
+        console.log(value)
+        console.log(url);
 
-
-        } else if (name === 'categoryName') {
-            setSearchInfo({...searchInfo, [name]: value});
-            setCategorySelected(value !== 'All')
-            value !== 'All' ?
-                navigate(`/search?category=${value}`) :
-                navigate(`/`);
-        }
-
+        changeUrlAndNavigate(url, name, value)
     };
 
-    // useEffect(() => {
-    //     fetchData()
-    // }, [transactions])
+    function changeUrlAndNavigate(url, name, value) {
+        let newUrl;
 
+        setFilterInfo({...filterInfo, [name]: value});
 
-    function handleStartDate(event) {
-        setStartDate(event.target.value)
+        if (!url.includes(name)) {
+            newUrl = url === '' || url === '/'
+                ? url + `search?${name}=${value}`
+                : url + `&${name}=${value}`
+        } else if (url.indexOf('&', url.indexOf(name)) === -1) {
+            let index;
+            index = url.indexOf(name)
+            if (value === 'all') {
+                newUrl = url.charAt(index - 1) === '?' ?
+                    url.substring(0, index - 7) :
+                    url.substring(0, index - 1)
+            } else {
+                newUrl = url.substring(0, index) + `${name}=${value}`
+            }
+        } else {
+            let index;
+            index = url.indexOf(name)
+            if (value === 'all') {
+                let lastIndex = url.indexOf('&', index)
+                newUrl = url.substring(0, index) + url.substring(lastIndex + 1)
+            } else {
+                let lastIndex = url.indexOf('&', index)
+                newUrl = url.substring(0, index) + `${name}=${value}` + url.substring(lastIndex)
+            }
+        }
+
+        if (newUrl.charAt(0) !== '/') {
+            newUrl = '/' + newUrl;
+        }
+
+        setUrl(newUrl);
+        navigate(newUrl)
     }
 
-    function handleEndDate(event) {
-        setStartDate(event.target.value)
-    }
 
     return (
 
@@ -153,18 +190,18 @@ export default function Home() {
                 <div className={"mt-3 d-flex justify-content-around px-5 w-50 m-auto"}>
                     <div>
                         <span className={"mx-1"}>From </span>
-                        <input required type="date" id="meeting-time-1"
-                               name="meeting-time"
-                               defaultValue={startDate}
-                               onChange={handleStartDate}
+                        <input className={''} required type="date" id="startDate"
+                               name="startDate"
+                               defaultValue={filterInfo.startDate}
+                               onChange={handleFilterInfo}
                         />
                     </div>
                     <div>
                         <span className={"mx-1"}>To </span>
-                        <input className={""} required type="date" id="meeting-time-2"
-                               name="meeting-time"
-                               defaultValue={endDate}
-                               onChange={handleEndDate}
+                        <input className={""} required type="date" id="endDate"
+                               name="endDate"
+                               defaultValue={filterInfo.endDate}
+                               onChange={handleFilterInfo}
                         />
                     </div>
                 </div>
@@ -175,12 +212,14 @@ export default function Home() {
                         <label htmlFor="inputGroupSelect02">CATEGORY</label>
                         <select required className="form-select mt-3 w-100" id="category_transaction"
                                 name="categoryName"
-                                defaultValue={searchInfo.categoryName}
-                                onChange={handleSearchInfo}>
-                            <option>All</option>
+                                defaultValue={filterInfo.categoryName}
+                                onChange={handleFilterInfo}>
+                            <option value={'all'}>All</option>
                             {categories.map((category, index) =>
-                                <option disabled={isTypeSelected} key={index}
-                                        value={category.name}>{category.name}</option>
+                                <option
+                                    // disabled={isTypeSelected}
+                                    key={index}
+                                    value={category.name}>{category.name}</option>
                             )}
                         </select>
                     </div>
@@ -189,11 +228,13 @@ export default function Home() {
                         <label htmlFor="inputGroupSelect02">TYPE</label>
                         <select className="form-select mt-3 w-100" id="is_income_transaction"
                                 name="typeName"
-                                defaultValue={searchInfo.typeName}
-                                onChange={handleSearchInfo}>
-                            <option>All</option>
+                                defaultValue={filterInfo.typeName}
+                                onChange={handleFilterInfo}>
+                            <option value={'all'}>All</option>
                             {types.map((t, index) =>
-                                <option disabled={isCategorySelected} key={index} value={t.name}>{t.name}</option>
+                                <option
+                                    // disabled={isCategorySelected}
+                                    key={index} value={t.name}>{t.name}</option>
                             )}
                         </select>
                     </div>
