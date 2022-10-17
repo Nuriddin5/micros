@@ -175,11 +175,6 @@ export default function Home() {
         navigate(newUrl)
     }
 
-
-    function clearFilter() {
-        navigate('/')
-    }
-
     return (
 
         <div className={"container"}>
@@ -199,7 +194,8 @@ export default function Home() {
                 <div className={"mt-3 d-flex justify-content-around px-5 w-50 m-auto"}>
                     <div>
                         <span className={"mx-1"}>From </span>
-                        <input className={''} required type="date" id="startDate"
+
+                        <input className={'form-control'} required type="date" id="startDate"
                                name="startDate"
                                defaultValue={filterInfo.startDate}
                                onChange={handleFilterInfo}
@@ -207,7 +203,7 @@ export default function Home() {
                     </div>
                     <div>
                         <span className={"mx-1"}>To </span>
-                        <input className={""} required type="date" id="endDate"
+                        <input className={'form-control'} required type="date" id="endDate"
                                name="endDate"
                                defaultValue={filterInfo.endDate}
                                onChange={handleFilterInfo}
