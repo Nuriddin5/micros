@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useNavigate, useSearchParams} from "react-router-dom";
+import {Link, useNavigate, useSearchParams} from "react-router-dom";
 
 const {REACT_APP_API_ENDPOINT} = process.env;
 
@@ -24,11 +24,6 @@ export default function Home() {
 
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-
-    let typeSearchParam = searchParams.get('type');
-    let categorySearchParam = searchParams.get('category');
-    let startDateSearchParam = searchParams.get('startDate');
-    let endDateSearchParam = searchParams.get('endDate');
 
 
     const user = JSON.parse(localStorage.getItem("user"));
@@ -83,7 +78,6 @@ export default function Home() {
                 'Accept': 'application/json'
             }
             try {
-
                 fetch(url, {headers})
                     .then(response => response.json())
                     .then(data => {
@@ -137,14 +131,23 @@ export default function Home() {
         let newUrl;
 
         setFilterInfo({...filterInfo, [name]: value});
+        if (name === 'typeName' && value === 'all') {
+            setTypeSelected(false)
+        } else if (name === 'typeName' && value !== 'all') {
+            setTypeSelected(true)
+        } else if (name === 'categoryName' && value === 'all') {
+            setCategorySelected(false)
+        } else if (name === 'categoryName' && value !== 'all') {
+            setCategorySelected(true)
+        }
 
         if (!url.includes(name)) {
             newUrl = url === '' || url === '/'
                 ? url + `search?${name}=${value}`
-                : url + `&${name}=${value}`
+                : url + `&${name}=${value}`;
         } else if (url.indexOf('&', url.indexOf(name)) === -1) {
             let index;
-            index = url.indexOf(name)
+            index = url.indexOf(name);
             if (value === 'all') {
                 newUrl = url.charAt(index - 1) === '?' ?
                     url.substring(0, index - 7) :
@@ -154,7 +157,7 @@ export default function Home() {
             }
         } else {
             let index;
-            index = url.indexOf(name)
+            index = url.indexOf(name);
             if (value === 'all') {
                 let lastIndex = url.indexOf('&', index)
                 newUrl = url.substring(0, index) + url.substring(lastIndex + 1)
@@ -173,6 +176,10 @@ export default function Home() {
     }
 
 
+    function clearFilter() {
+        navigate('/')
+    }
+
     return (
 
         <div className={"container"}>
@@ -183,6 +190,9 @@ export default function Home() {
                 <a href="/addTransaction">
                     <button className={"btn btn-success ms-5"}>ADD NEW</button>
                 </a>
+                <Link to={'/'}>
+                    <button className={"btn btn-secondary ms-5"}>Clear Filters</button>
+                </Link>
             </div>
 
             <div>
@@ -216,7 +226,7 @@ export default function Home() {
                             <option value={'all'}>All</option>
                             {categories.map((category, index) =>
                                 <option
-                                    // disabled={isTypeSelected}
+                                    disabled={isTypeSelected}
                                     key={index}
                                     value={category.name}>{category.name}</option>
                             )}
@@ -232,7 +242,7 @@ export default function Home() {
                             <option value={'all'}>All</option>
                             {types.map((t, index) =>
                                 <option
-                                    // disabled={isCategorySelected}
+                                    disabled={isCategorySelected}
                                     key={index} value={t.name}>{t.name}</option>
                             )}
                         </select>

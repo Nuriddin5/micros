@@ -22,9 +22,6 @@ public class TransactionService : ITransactionService
     {
         List<Transaction> transactions;
 
-        // DateTime dateFrom = Convert.ToDateTime(startDate);
-        //
-        // DateTime dateTo = Convert.ToDateTime(endDate);
 
         DateTime dateFrom = DateTime.TryParse(startDate, out dateFrom) ? dateFrom : DateTime.MinValue;
         DateTime dateTo = DateTime.TryParse(endDate, out dateTo) ? dateTo : DateTime.MinValue;
