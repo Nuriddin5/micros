@@ -45,6 +45,7 @@ export default function Home() {
                 fetch(url, {headers})
                     .then(response => response.json())
                     .then(data => {
+
                         setTypes(data);
                     });
             } catch (err) {
@@ -56,26 +57,20 @@ export default function Home() {
 
 
     useEffect(() => {
-        let baseUrl = `${REACT_APP_API_ENDPOINT}/Transactions`;
-        let url = `${REACT_APP_API_ENDPOINT}/Transactions`;
+        // let baseUrl = `${REACT_APP_API_ENDPOINT}/Transactions`;
+        let url = `${REACT_APP_API_ENDPOINT}/Transactions?`;
 
-        if (typeSearchParam !== null) {
-            url += `?type=${typeSearchParam}`
-            if (startDateSearchParam !== null) url += `&startDate=${startDateSearchParam}`
-            if (startDateSearchParam !== null) url += `&endDate=${endDateSearchParam}`
-        } else if (categorySearchParam !== null) {
-            url += `?category=${categorySearchParam}`
-            if (startDateSearchParam !== null) url += `&startDate=${startDateSearchParam}`
-            if (startDateSearchParam !== null) url += `&endDate=${endDateSearchParam}`
-        } else {
-            if (startDateSearchParam !== null) url += `?startDate=${startDateSearchParam}`
-            if (baseUrl === url) {
-                if (startDateSearchParam !== null) {
-                    url += `&endDate=${endDateSearchParam}`
-                } else {
-                    url += `?endDate=${endDateSearchParam}`
-                }
+        const currentParams = Object.fromEntries([...searchParams]);
+
+        console.log(currentParams);
+
+        for (const param in currentParams) {
+            if (url.charAt(url.length - 1) === '?') {
+                url = url + `${param}=${currentParams[param]}`;
+            } else {
+                url = url + `&${param}=${currentParams[param]}`;
             }
+            console.log(`${param}: ${currentParams[param]}`);
         }
 
 
@@ -88,22 +83,26 @@ export default function Home() {
                 'Accept': 'application/json'
             }
             try {
+
                 fetch(url, {headers})
                     .then(response => response.json())
                     .then(data => {
+                        console.log(data);
                         setTransactions(data);
                     });
+
             } catch (err) {
                 console.log(err);
             }
         };
         fetchData();
-    }, [categorySearchParam, endDateSearchParam, startDateSearchParam, typeSearchParam, user.password, user.username]);
+    }, [searchParams, user.password, user.username]);
 
 
     useEffect(() => {
         const url = `${REACT_APP_API_ENDPOINT}/Categories/`;
         const token = btoa(`${user.username}:${user.password}`);
+        console.log(token);
 
 
         const fetchData = () => {

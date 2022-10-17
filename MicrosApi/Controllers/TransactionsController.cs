@@ -26,15 +26,16 @@ namespace MicrosApi.Controllers
         // GET: api/Transactions
         [Authorize]
         [HttpGet]
-        public ActionResult<List<Transaction>> GetTransactionsByUser([FromQuery] string? type,[FromQuery] string? category
-        ,string? startDate,string? endDate)
+        public ActionResult<List<Transaction>> GetTransactionsByUser([FromQuery] string? typeName,
+            [FromQuery] string? categoryName
+            , [FromQuery] string? startDate, [FromQuery] string? endDate)
         {
             List<Transaction> transactions;
             try
             {
                 var username = HttpContext.User.Identity?.Name;
-                
-                transactions = _service.GetTransactionsByUser(username,type,category,startDate,endDate);
+
+                transactions = _service.GetTransactionsByUser(username, typeName, categoryName, startDate, endDate);
             }
             catch (System.Exception e)
             {
