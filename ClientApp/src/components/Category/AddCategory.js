@@ -81,7 +81,7 @@ export default function AddCategory() {
             }
         };
         fetchData();
-    }, []);
+    }, [user.password, user.username]);
 
 
     return (

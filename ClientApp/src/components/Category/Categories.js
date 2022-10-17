@@ -19,7 +19,6 @@ export default function Categories() {
                 fetch(url, {headers})
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data);
                         setCategories(data);
                     });
             } catch (err) {
@@ -27,7 +26,7 @@ export default function Categories() {
             }
         };
         fetchData();
-    }, []);
+    }, [user.password, user.username]);
 
     return (
 

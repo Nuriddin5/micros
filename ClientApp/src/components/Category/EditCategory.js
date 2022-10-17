@@ -25,22 +25,17 @@ export default function EditCategory() {
                 fetch(url, {headers})
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data)
                         setCategoryName(data.name)
                         setTypeName(data.type.name)
-                        console.log(data.type.name)
-                        console.log(categoryName)
                     });
             } catch (err) {
                 console.log(err);
             }
         };
         fetchData();
-    }, []);
+    }, [id, user.password, user.username]);
 
     const showToastMessage = (message, status) => {
-        console.log(message)
-        console.log(status)
         if (status === 200) {
             toast.success("Successfully edited!", {
                 position: toast.POSITION.TOP_RIGHT
@@ -112,7 +107,7 @@ export default function EditCategory() {
             }
         };
         fetchData();
-    }, []);
+    }, [user.password, user.username]);
 
     return (
         <div className="form-v7">

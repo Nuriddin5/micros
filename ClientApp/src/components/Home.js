@@ -57,7 +57,6 @@ export default function Home() {
 
         const currentParams = Object.fromEntries([...searchParams]);
 
-        console.log(currentParams);
 
         for (const param in currentParams) {
             if (url.charAt(url.length - 1) === '?') {
@@ -65,7 +64,6 @@ export default function Home() {
             } else {
                 url = url + `&${param}=${currentParams[param]}`;
             }
-            console.log(`${param}: ${currentParams[param]}`);
         }
 
 
@@ -81,7 +79,6 @@ export default function Home() {
                 fetch(url, {headers})
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data);
                         setTransactions(data);
                     });
 
@@ -96,7 +93,6 @@ export default function Home() {
     useEffect(() => {
         const url = `${REACT_APP_API_ENDPOINT}/Categories/`;
         const token = btoa(`${user.username}:${user.password}`);
-        console.log(token);
 
 
         const fetchData = () => {
@@ -119,10 +115,6 @@ export default function Home() {
     const handleFilterInfo = (event) => {
         let name = event.target.name;
         let value = event.target.value;
-
-        console.log(name)
-        console.log(value)
-        console.log(url);
 
         changeUrlAndNavigate(url, name, value)
     };

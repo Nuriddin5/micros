@@ -20,7 +20,6 @@ export default function AddTransaction() {
     useEffect(() => {
         const url = `${REACT_APP_API_ENDPOINT}/Categories`;
         const token = btoa(`${user.username}:${user.password}`);
-        console.log(token);
 
 
         const fetchData = () => {
@@ -29,7 +28,6 @@ export default function AddTransaction() {
                 fetch(url, {headers})
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data)
                         setCategories(data);
                     });
             } catch (err) {
@@ -39,7 +37,7 @@ export default function AddTransaction() {
 
         };
         fetchData();
-    }, []);
+    }, [user.password, user.username]);
 
 
     const showToastMessage = (message, status) => {
@@ -84,7 +82,6 @@ export default function AddTransaction() {
                 })
 
         };
-        console.log(requestOptions)
         try {
             fetch(url, requestOptions)
                 .then(response => {

@@ -21,9 +21,6 @@ export default function Login() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        console.log(userInfo);
-
-
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},

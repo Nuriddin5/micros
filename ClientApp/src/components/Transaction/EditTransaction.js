@@ -29,25 +29,22 @@ export default function EditTransaction() {
                 fetch(url, {headers})
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data)
                         setAmount(data.amount)
                         setComment(data.comment)
                         setDate(data.date)
                         setCategoryName(data.category.name)
-                        console.log(categoryName)
                     });
             } catch (err) {
                 console.log(err);
             }
         };
         fetchData();
-    }, []);
+    }, [id, user.password, user.username]);
 
 
     useEffect(() => {
         const url = `${REACT_APP_API_ENDPOINT}/Categories`;
         const token = btoa(`${user.username}:${user.password}`);
-        console.log(token);
 
         const fetchData = () => {
             const headers = {'Authorization': `basic ${token}`}
@@ -55,7 +52,6 @@ export default function EditTransaction() {
                 fetch(url, {headers})
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data)
                         setCategories(data);
                     });
             } catch (err) {
@@ -63,7 +59,7 @@ export default function EditTransaction() {
             }
         };
         fetchData();
-    }, []);
+    }, [user.password, user.username]);
 
 
     const showToastMessage = (message, status) => {

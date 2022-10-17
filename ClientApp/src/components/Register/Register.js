@@ -1,7 +1,6 @@
 ﻿import {useState} from "react";
 import 'react-toastify/dist/ReactToastify.css';
-import {ToastContainer, toast} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import {toast, ToastContainer} from 'react-toastify';
 import "./register.css"
 
 const {REACT_APP_API_ENDPOINT} = process.env;
@@ -45,9 +44,6 @@ export default function Register() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
-        console.log(userInfo);
-
 
         const requestOptions = {
             method: 'POST',
