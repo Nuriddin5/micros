@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 
 const {REACT_APP_API_ENDPOINT} = process.env;
 
-
 export default function Categories() {
 
     const user = JSON.parse(localStorage.getItem("user"));

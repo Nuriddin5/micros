@@ -32,7 +32,7 @@ namespace MicrosApi.Controllers
             return Ok("User registered successfully");
         }
 
-        [Route("login")]
+        [Route("Login")]
         [HttpPost]
         public ActionResult Login(LoginDto loginDto)
         {

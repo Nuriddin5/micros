@@ -50,9 +50,9 @@ export default function Home() {
         fetchData();
     }, [user.password, user.username]);
 
+    //todo set income or expense automatically when change category
 
     useEffect(() => {
-        // let baseUrl = `${REACT_APP_API_ENDPOINT}/Transactions`;
         let url = `${REACT_APP_API_ENDPOINT}/Transactions?`;
 
         const currentParams = Object.fromEntries([...searchParams]);

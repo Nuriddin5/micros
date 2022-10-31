@@ -1,7 +1,6 @@
-﻿using MicrosApi.Dtos;
+﻿using MicrosApi.Context;
+using MicrosApi.Dtos;
 using MicrosApi.Exception;
-using Microsoft.AspNetCore.Mvc;
-using MicrosApi.Context;
 using MicrosApi.Models;
 using Npgsql;
 
@@ -36,14 +35,10 @@ public class AuthService : IAuthService
 
 
         var password = registerDto.Password;
-        if (string.IsNullOrEmpty(password))
-            throw new CustomException("Password is empty");
 
-        if (!password.Equals(registerDto.PrePassword))
-            throw new CustomException("Passwords doesn't match ");
+        var prePassword = registerDto.PrePassword;
+        CheckingPasswordValidness(password,prePassword);
 
-        if (password.Length < 6)
-            throw new CustomException("Passwords length  should be 6 character minimum");
 
         User user = new()
         {
@@ -62,6 +57,25 @@ public class AuthService : IAuthService
         }
     }
 
+    private static void CheckingPasswordValidness(string password, string prePassword)
+    {
+        if (string.IsNullOrEmpty(password))
+            throw new CustomException("Password is empty");
+
+        if (!password.Any(char.IsUpper))
+            throw new CustomException("Password  should have one uppercase letter least");
+
+        if (password.Length < 8)
+            throw new CustomException("Passwords length  should be 8 character minimum");
+
+
+        if (password.All(char.IsLetterOrDigit))
+            throw new CustomException("Password should have one special character");
+        
+        if (!password.Equals(prePassword))
+            throw new CustomException("Passwords doesn't match");
+    }
+
     public void Login(LoginDto loginDto)
     {
         var username = loginDto.UserName;
@@ -78,10 +92,6 @@ public class AuthService : IAuthService
         }
 
         var user = _context.users.Single(user => username.Equals(user.UserName));
-
-        if (string.IsNullOrEmpty(loginDto.Password) || loginDto.Password.Length < 6)
-            throw new CustomException("Username or password incorrect");
-
 
         if (!loginDto.Password.Equals(user.Password))
             throw new CustomException("Username or password incorrect");

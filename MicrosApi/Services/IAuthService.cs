@@ -7,5 +7,4 @@ public interface IAuthService
 {
     void Register(RegisterDto registerDto);
     void Login(LoginDto loginDto);
-    // bool Logout();
 }

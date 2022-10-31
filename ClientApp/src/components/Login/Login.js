@@ -30,7 +30,7 @@ export default function Login() {
             })
         };
         try {
-            fetch(`${REACT_APP_API_ENDPOINT}/login`, requestOptions)
+            fetch(`${REACT_APP_API_ENDPOINT}/Login`, requestOptions)
                 .then(response => {
                     let data = response.json();
                     data.then(value => showToastMessage(value, response.status));
@@ -49,6 +49,7 @@ export default function Login() {
                 username: userInfo.username,
                 password: userInfo.password,
             })
+            //todo change this to token
             localStorage.setItem("user", data);
             window.location.href = '/';
         } else if (status === 400) {
