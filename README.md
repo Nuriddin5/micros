@@ -1,1 +1,1 @@
-Demo money tracker app for notes for yours expense and incomes. Deployed at https://micros1258.web.app/. Functionality : custom user sign up and sign in, basic authentication, client app in react JS, backend in .net 6, deployed in firebase, backend in azure.
+Demo money tracker app for notes for yours expense and incomes. Deployed at https://micros1258.web.app/ or https://microstestapp.web.app/. Functionality : custom user sign up and sign in, basic authentication, client app in react JS, backend in .net 6, deployed in firebase, backend in azure.
